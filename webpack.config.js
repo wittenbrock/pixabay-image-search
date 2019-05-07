@@ -61,6 +61,7 @@ module.exports = {
     ], // rules array ends
   },
   plugins: [
+    new Dotenv(),
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: path.join(__dirname, 'src', 'index.html'),
@@ -71,6 +72,5 @@ module.exports = {
         collapseWhitespace: true,
       },
     }),
-    new Dotenv(),
   ], // plugins array ends
 };
