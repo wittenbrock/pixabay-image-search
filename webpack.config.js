@@ -2,6 +2,7 @@ import path from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CleanWebpackPlugin from 'clean-webpack-plugin';
 import TerserJSPlugin from 'terser-webpack-plugin';
+import Dotenv from 'dotenv-webpack';
 
 module.exports = {
   entry: ['@babel/polyfill', './src/index.js'],
@@ -70,5 +71,6 @@ module.exports = {
         collapseWhitespace: true,
       },
     }),
+    new Dotenv(),
   ], // plugins array ends
 };
