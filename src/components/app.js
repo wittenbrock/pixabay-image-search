@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 
 async function getPictures(searchQuery) {
   console.log('2. getPictures runs');
-  // const urlString = searchQuery.replace(' ', '+');
-  const urlString = 'cats';
+  const urlString = searchQuery.replace(' ', '+');
+  // const urlString = 'cats';
   const fetchResponse = await fetch(
     `https://pixabay.com/api/?key=${
       process.env.PIXABAY_API_KEY
@@ -17,8 +17,8 @@ async function getPictures(searchQuery) {
   // console.log('processedData:', processedData);
 }
 
-function processSearchResults(resultsArray) {
-  console.log('4. processSearchResults runs');
+function processSearchResult(resultsArray) {
+  console.log('4. processSearchResult runs');
   return resultsArray.map(pictureObj => {
     const {
       id,
@@ -52,27 +52,46 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      searchQuery: '',
+      prevSearchQuery: '',
       searchResult: [],
     };
     this.handleClick = this.handleClick.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   async handleClick() {
-    console.log('1. handleClick runs');
-    const fetchResult = await getPictures().catch(handleError);
-    console.log('3. handleClick getPictures', fetchResult);
-    const searchResult = await processSearchResults(fetchResult);
-    console.log('5. handleClick processResults', searchResult);
-    this.setState({ searchResult });
+    // event.preventDefault();
+    const { searchQuery, prevSearchQuery } = this.state;
+    if (searchQuery !== prevSearchQuery) {
+      console.log('1. handleClick runs');
+      const fetchedResult = await getPictures(searchQuery).catch(handleError);
+      console.log('3. handleClick getPictures', fetchedResult);
+      const searchResult = await processSearchResult(fetchedResult);
+      console.log('5. handleClick processResults', searchResult);
+      this.setState(() => ({ searchResult, prevSearchQuery: searchQuery }));
+    }
+  }
+
+  handleChange(event) {
+    const { value: searchQuery } = event.target;
+
+    this.setState(() => ({ searchQuery }));
   }
 
   render() {
     const { searchResult } = this.state;
     return (
       <div>
+        <label htmlFor="search-input">
+          <input id="search-input" type="text" onChange={this.handleChange} />
+        </label>
         <button type="button" onClick={this.handleClick}>
-          Search
+          Submit
         </button>
+        {/* <button type="button" onClick={this.handleClick}>
+          Search
+        </button> */}
         <div>
           {searchResult.map(pictureObj => {
             const {
