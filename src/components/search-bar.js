@@ -4,23 +4,22 @@ import PropTypes from 'prop-types';
 // Stores user's input as inputtedSearch,
 // then sends it to App, its parent component, where it's stored as searchQuery
 class SearchBar extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      inputtedSearch: '',
-      prevInputtedSearch: '',
-    };
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-  }
+  static propTypes = {
+    onSubmit: PropTypes.func,
+  };
 
-  handleChange(event) {
+  state = {
+    inputtedSearch: '',
+    prevInputtedSearch: '',
+  };
+
+  handleChange = event => {
     const { value: inputtedSearch } = event.target;
 
     this.setState(() => ({ inputtedSearch }));
-  }
+  };
 
-  handleSubmit(event) {
+  handleSubmit = event => {
     event.preventDefault();
     const { onSubmit } = this.props;
     const { inputtedSearch, prevInputtedSearch } = this.state;
@@ -30,7 +29,7 @@ class SearchBar extends Component {
     }
 
     this.setState(() => ({ prevInputtedSearch: inputtedSearch }));
-  }
+  };
 
   render() {
     const { inputtedSearch } = this.state;
@@ -46,9 +45,5 @@ class SearchBar extends Component {
     );
   }
 }
-
-SearchBar.propTypes = {
-  onSubmit: PropTypes.func,
-};
 
 export default SearchBar;

@@ -1,31 +1,4 @@
 {
-  "env": {
-    "development": {
-      "plugins": [
-        [
-          "styled-components",
-          { "ssr": true, "displayName": true, "preprocess": false },
-          "@babel/plugin-proposal-class-properties"
-        ]
-      ],
-      "presets": ["@babel/env", "@babel/react"]
-    },
-    "production": {
-      "plugins": [
-        [
-          "styled-components",
-          { "ssr": true, "displayName": true, "preprocess": false },
-          "@babel/plugin-proposal-class-properties"
-        ]
-      ],
-      "presets": ["@babel/env", "@babel/react"]
-    }
-  },
-  "plugins": [
-    [
-      "styled-components",
-      { "ssr": true, "displayName": true, "preprocess": false },
-      "@babel/plugin-proposal-class-properties"
-    ]
-  ]
+  "presets": ["@babel/env", "@babel/react"],
+  "plugins": ["babel-plugin-styled-components", "@babel/plugin-syntax-dynamic-import", "@babel/plugin-proposal-class-properties"], 
 }

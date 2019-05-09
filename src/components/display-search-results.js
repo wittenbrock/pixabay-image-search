@@ -1,20 +1,22 @@
-import React, { Component } from 'react';
+import React, { Component, lazy, Suspense } from 'react';
 import PropTypes from 'prop-types';
 import queryPixabay from '../utilities/pixabay-api';
 import LoadingScreen from './loading-screen';
-import ImageGrid from './image-grid';
+
+const LazyLoadedImageGrid = lazy(() => import('./image-grid'));
 
 class DisplaySearchResults extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      pixabayImages: [],
-      pixabayApiLoading: true,
-      error: null,
-    };
-  }
+  static propTypes = {
+    searchQuery: PropTypes.string,
+  };
 
-  componentDidMount() {
+  state = {
+    pixabayImages: [],
+    pixabayApiLoading: true,
+    error: null,
+  };
+
+  componentDidMount = () => {
     console.log('component did mount');
     const { searchQuery } = this.props;
     queryPixabay(searchQuery).then(pixabayImages => {
@@ -29,9 +31,9 @@ class DisplaySearchResults extends Component {
         pixabayApiLoading: false,
       }));
     });
-  }
+  };
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate = (prevProps, prevState) => {
     console.log('component did update');
     const { searchQuery: prevSearchQuery } = prevProps;
     const { searchQuery } = this.props;
@@ -50,7 +52,7 @@ class DisplaySearchResults extends Component {
         }));
       });
     }
-  }
+  };
 
   render() {
     console.log('.............RENDER.............');
@@ -68,12 +70,15 @@ class DisplaySearchResults extends Component {
       );
     }
 
-    return <ImageGrid pixabayImages={pixabayImages} />;
+    // TODO: change fallback to a component.
+    if (pixabayImages !== []) {
+      return (
+        <Suspense fallback={<div>Image Grid is loading</div>}>
+          <LazyLoadedImageGrid pixabayImages={pixabayImages} />
+        </Suspense>
+      );
+    }
   }
 }
-
-DisplaySearchResults.propTypes = {
-  searchQuery: PropTypes.string,
-};
 
 export default DisplaySearchResults;

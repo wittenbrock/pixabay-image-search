@@ -5,11 +5,22 @@ import TerserJSPlugin from 'terser-webpack-plugin';
 import Dotenv from 'dotenv-webpack';
 
 module.exports = {
+  // ------------------------------------
+  // Entry Points
+  // ------------------------------------
   entry: ['@babel/polyfill', './src/index.js'],
+
+  // ------------------------------------
+  // Bundle Output
+  // ------------------------------------
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: '[name].bundle.[chunkhash].js',
   },
+
+  // ------------------------------------
+  // Development Server
+  // ------------------------------------
   devServer: {
     contentBase: path.join(__dirname, 'build'),
     compress: true,
@@ -22,7 +33,15 @@ module.exports = {
     extensions: ['.js', '.jsx'],
   },
   devtool: 'inline-source-map',
+
+  // ------------------------------------
+  // Bundle Optimization
+  // ------------------------------------
   optimization: {
+    splitChunks: {
+      chunks: 'all',
+      minChunks: 2,
+    },
     minimizer: [
       new TerserJSPlugin({
         terserOptions: {
@@ -34,6 +53,9 @@ module.exports = {
     ],
   },
 
+  // ------------------------------------
+  // Modules
+  // ------------------------------------
   module: {
     rules: [
       {
@@ -60,6 +82,10 @@ module.exports = {
       },
     ], // rules array ends
   },
+
+  // ------------------------------------
+  // Plugins
+  // ------------------------------------
   plugins: [
     new Dotenv(),
     new CleanWebpackPlugin(),
@@ -73,4 +99,4 @@ module.exports = {
       },
     }),
   ], // plugins array ends
-};
+}; // module.exports ends
