@@ -52,6 +52,12 @@ class DisplaySearchResults extends Component {
             imagesAreLoading: false,
           }));
         }
+        if (pixabayImages.length === 0) {
+          return this.setState(() => ({
+            pixabayResponseError: `I'm sorry, your search did not produce any results.`,
+            imagesAreLoading: false,
+          }));
+        }
         return this.setState(() => ({
           pixabayImages,
           imagesAreLoading: true,
@@ -87,6 +93,10 @@ class DisplaySearchResults extends Component {
         </div>
       );
     }
+
+    // if (pixabayImages === []) {
+    //   console.log('pixabayImage is an empty array.');
+    // }
 
     return (
       <div
