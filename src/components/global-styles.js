@@ -11,6 +11,8 @@ const GlobalStyles = createGlobalStyle`
 html {
   box-sizing: border-box;
   font-size: 100%;
+  background-color: #323638;
+  color: #ffffff;
 }
 
 a {

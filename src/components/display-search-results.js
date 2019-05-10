@@ -1,9 +1,18 @@
-import React, { Component, lazy, Suspense } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import queryPixabay from '../utilities/pixabay-api';
 import LoadingScreen from './loading-screen';
+import ImageGallery from './image-gallery';
 
-const LazyLoadedImageGrid = lazy(() => import('./image-grid'));
+// Checks if all the images in the image gallery have been loaded to the DOM
+// returns true if all the images have not been loaded yet
+// returns false if all the images have loaded
+// input: HTML DOM node | output: true or false boolean
+function areImagesStillLoading(htmlParentNode) {
+  const htmlImageElements = [...htmlParentNode.querySelectorAll('img')];
+
+  return !htmlImageElements.every(image => image.complete);
+}
 
 class DisplaySearchResults extends Component {
   static propTypes = {
@@ -12,29 +21,26 @@ class DisplaySearchResults extends Component {
 
   state = {
     pixabayImages: [],
-    pixabayApiLoading: true,
-    error: null,
+    pixabayResponseError: null,
+    imagesAreLoading: true,
   };
 
   componentDidMount = () => {
-    console.log('component did mount');
     const { searchQuery } = this.props;
     queryPixabay(searchQuery).then(pixabayImages => {
       if (pixabayImages === null) {
         return this.setState(() => ({
-          error: `I'm sorry, there was an error. Please refresh the page and try your search again.`,
-          pixabayApiLoading: false,
+          pixabayResponseError: `I'm sorry, there was an error connecting to the Pixabay database. Please refresh the page and try your search again.`,
+          imagesAreLoading: false,
         }));
       }
       return this.setState(() => ({
         pixabayImages,
-        pixabayApiLoading: false,
       }));
     });
   };
 
   componentDidUpdate = (prevProps, prevState) => {
-    console.log('component did update');
     const { searchQuery: prevSearchQuery } = prevProps;
     const { searchQuery } = this.props;
 
@@ -42,42 +48,60 @@ class DisplaySearchResults extends Component {
       queryPixabay(searchQuery).then(pixabayImages => {
         if (pixabayImages === null) {
           return this.setState(() => ({
-            error: `I'm sorry, there was an error. Please refresh the page and try your search again.`,
-            pixabayApiLoading: false,
+            pixabayResponseError: `I'm sorry, there was an error connecting to the Pixabay database. Please refresh the page and try your search again.`,
+            imagesAreLoading: false,
           }));
         }
         return this.setState(() => ({
           pixabayImages,
-          pixabayApiLoading: false,
+          imagesAreLoading: true,
         }));
       });
     }
   };
 
+  // when imagesAreLoading = true, <LoadingScreen /> is visible
+  handleImagesLoaded = () => {
+    this.setState({
+      imagesAreLoading: areImagesStillLoading(this.galleryElement),
+    });
+  };
+
+  renderLoadingScreen() {
+    const { imagesAreLoading } = this.state;
+    return imagesAreLoading ? <LoadingScreen /> : null;
+  }
+
   render() {
-    console.log('.............RENDER.............');
-    const { pixabayImages, error, pixabayApiLoading } = this.state;
+    console.log('............. DisplaySearchResults RENDERED.............');
+    const {
+      pixabayImages,
+      pixabayResponseError,
+      imagesAreLoading,
+    } = this.state;
 
-    if (pixabayApiLoading) {
-      return <LoadingScreen />;
-    }
-
-    if (error) {
+    if (pixabayResponseError) {
       return (
         <div>
-          <p>{error}</p>
+          <p>{pixabayResponseError}</p>
         </div>
       );
     }
 
-    // TODO: change fallback to a component.
-    if (pixabayImages !== []) {
-      return (
-        <Suspense fallback={<div>Image Grid is loading</div>}>
-          <LazyLoadedImageGrid pixabayImages={pixabayImages} />
-        </Suspense>
-      );
-    }
+    return (
+      <div
+        ref={element => {
+          this.galleryElement = element;
+        }}
+      >
+        {this.renderLoadingScreen()}
+        <ImageGallery
+          pixabayImages={pixabayImages}
+          handleImagesLoaded={this.handleImagesLoaded}
+          imagesAreLoading={imagesAreLoading}
+        />
+      </div>
+    );
   }
 }
 
