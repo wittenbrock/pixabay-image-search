@@ -47,13 +47,15 @@ function handleError(error) {
 }
 
 // Combines getPictures and processSearchResult functions into one function
-// input: array of objects | output: array of objects
+// input: array of objects | output: array of objects or null
 async function queryPixabay(searchQuery) {
   const fetchedResult = await getPictures(searchQuery).catch(handleError);
   const searchResult = await processSearchResult(fetchedResult);
+  console.log('The search query was:', searchQuery);
   console.log('Pixabay API was queried successfully.');
   console.log('Pixabay result:', searchResult);
-  return searchResult;
+
+  return fetchedResult === null ? null : searchResult;
 }
 
 export default queryPixabay;

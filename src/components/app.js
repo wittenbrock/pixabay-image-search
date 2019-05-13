@@ -2,6 +2,15 @@ import React, { Component } from 'react';
 import SearchBar from './search-bar';
 import DisplaySearchResults from './display-search-results';
 
+/*
+  app
+    -> search-bar 
+    -> display-image-results
+        -> loading-screen
+        -> image-grid
+            -> pixabay-image
+*/
+
 class App extends Component {
   state = {
     searchQuery: '',

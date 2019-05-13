@@ -36,7 +36,12 @@ class SearchBar extends Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <label htmlFor="search-query">
-          <input id="search-query" type="text" onChange={this.handleChange} />
+          <input
+            id="search-query"
+            type="text"
+            onChange={this.handleChange}
+            placeholder="Search Pixabay images"
+          />
         </label>
         <button type="submit" disabled={!inputtedSearch}>
           Search
