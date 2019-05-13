@@ -13,7 +13,7 @@ async function getPictures(searchQuery) {
   return searchResultArray;
 }
 
-// Filters through fetched image data making new objects with relevant properties
+// Filters through fetched data making new objects with relevant properties
 // input: array of objects | output: array of objects
 function processSearchResult(resultsArray) {
   return resultsArray.map(pictureObj => {
@@ -46,8 +46,8 @@ function handleError(error) {
   return null;
 }
 
-// Combines getPictures and processSearchResult functions into one function
-// input: array of objects | output: array of objects or null
+// Combines getPictures and processSearchResult into one function
+// input: array of objects | output: array of objects or null if the connection fails
 async function queryPixabay(searchQuery) {
   const fetchedResult = await getPictures(searchQuery).catch(handleError);
   const searchResult = await processSearchResult(fetchedResult);

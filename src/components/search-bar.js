@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 class SearchBar extends Component {
   static propTypes = {
     onSubmit: PropTypes.func,
+    setImagesAreLoadingTo: PropTypes.func,
   };
 
   state = {
@@ -21,11 +22,12 @@ class SearchBar extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    const { onSubmit } = this.props;
+    const { onSubmit, setImagesAreLoadingTo } = this.props;
     const { inputtedSearch, prevInputtedSearch } = this.state;
 
     if (inputtedSearch !== prevInputtedSearch) {
       onSubmit(inputtedSearch);
+      setImagesAreLoadingTo(true);
     }
 
     this.setState(() => ({ prevInputtedSearch: inputtedSearch }));

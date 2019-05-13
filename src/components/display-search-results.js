@@ -2,98 +2,97 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FadeLoader } from 'react-spinners';
 import queryPixabay from '../utilities/pixabay-api';
-// import LoadingScreen from './loading-screen';
 import ImageGallery from './image-gallery';
 
-// Checks if all the images in the image gallery have been loaded to the DOM
-// returns true if all the images have not been loaded yet
-// returns false if all the images have loaded
+// Check if all the images have loaded to the DOM
 // input: HTML DOM node | output: true or false boolean
-function areImagesStillLoading(htmlParentNode) {
-  const htmlImageElements = [...htmlParentNode.querySelectorAll('img')];
-
+function areImagesStillLoading(htmlImageGallery) {
+  const htmlImageElements = [...htmlImageGallery.querySelectorAll('img')];
   return !htmlImageElements.every(image => image.complete);
 }
 
 class DisplaySearchResults extends Component {
   static propTypes = {
     searchQuery: PropTypes.string,
+    setImagesAreLoadingTo: PropTypes.func,
+    imagesAreLoading: PropTypes.bool,
   };
 
   state = {
     pixabayImages: [],
     pixabayConnectionError: null,
-    noImagesReturnedError: null,
-    imagesAreLoading: true,
+    noImagesWereReturned: null,
   };
 
-  // Calls the Pixabay database API with the user's inputted search
+  // Calls the Pixabay database API with the user's search
   // then sets the state depending on what Pixabay returns
   performPixabaySearch = searchQuery => {
+    const { setImagesAreLoadingTo } = this.props;
     queryPixabay(searchQuery)
-      // if an error is returned
-      .catch(() =>
+      // if a connection error occurred
+      .catch(() => {
+        setImagesAreLoadingTo(false);
         this.setState(() => ({
           pixabayConnectionError: true,
-          noImagesReturnedError: false,
-          imagesAreLoading: false,
-        }))
-      )
-      // if the promise returns an empty array
+        }));
+      })
+      // if the search didn't match any images
       .then(pixabayImages => {
         if (pixabayImages.length === 0) {
+          setImagesAreLoadingTo(false);
           return this.setState(() => ({
-            pixabayConnectionError: false,
-            noImagesReturnedError: true,
-            imagesAreLoading: false,
+            noImagesWereReturned: true,
           }));
         }
-        // if the promise returns an array of objects
+        // if the search was successful
         return this.setState(() => ({
           pixabayImages,
-          pixabayConnectionError: false,
-          noImagesReturnedError: false,
-          imagesAreLoading: true,
         }));
       });
   };
 
-  // query Pixabay when the component mounts
+  // after the component mounts query Pixabay
   componentDidMount = () => {
     const { searchQuery } = this.props;
     this.performPixabaySearch(searchQuery);
   };
 
-  // query Pixabay when a new search is inputted
-  componentDidUpdate = (prevProps, prevState) => {
+  // after a new search is inputted, reset the state, then query Pixabay
+  componentDidUpdate = prevProps => {
     const { searchQuery: prevSearchQuery } = prevProps;
     const { searchQuery } = this.props;
 
     if (searchQuery !== prevSearchQuery) {
+      // reset the state before starting a new search
+      this.setState(() => ({
+        pixabayImages: [],
+        pixabayConnectionError: null,
+        noImagesWereReturned: null,
+      }));
+      // start a new search
       this.performPixabaySearch(searchQuery);
     }
   };
 
-  // calls areImagesStillLoading, which sets the state imagesAreLoading to true or false
+  // After all the images have loaded to the DOM, set imagesAreLoading to false
   handleImagesLoaded = () => {
-    this.setState({
-      imagesAreLoading: areImagesStillLoading(this.galleryElement),
-    });
+    const { setImagesAreLoadingTo } = this.props;
+    const result = areImagesStillLoading(this.galleryElement);
+    setImagesAreLoadingTo(result);
   };
 
-  // when imagesAreLoading = true, <FadeLoader /> is displayed on render
-  renderLoadingScreen() {
-    const { imagesAreLoading } = this.state;
+  // display the loading animation as the images are loading to the DOM
+  renderLoadingAnimation() {
+    const { imagesAreLoading } = this.props;
     return imagesAreLoading ? <FadeLoader /> : null;
   }
 
   render() {
-    const { searchQuery } = this.props;
+    const { searchQuery, imagesAreLoading } = this.props;
     const {
       pixabayImages,
       pixabayConnectionError,
-      noImagesReturnedError,
-      imagesAreLoading,
+      noImagesWereReturned,
     } = this.state;
 
     if (pixabayConnectionError) {
@@ -109,7 +108,7 @@ class DisplaySearchResults extends Component {
       );
     }
 
-    if (noImagesReturnedError) {
+    if (noImagesWereReturned) {
       return (
         <div>
           <p>
@@ -126,7 +125,7 @@ class DisplaySearchResults extends Component {
           this.galleryElement = element;
         }}
       >
-        {this.renderLoadingScreen()}
+        {this.renderLoadingAnimation()}
         <ImageGallery
           pixabayImages={pixabayImages}
           handleImagesLoaded={this.handleImagesLoaded}
