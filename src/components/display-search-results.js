@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { FadeLoader } from 'react-spinners';
 import queryPixabay from '../utilities/pixabay-api';
-import LoadingScreen from './loading-screen';
+// import LoadingScreen from './loading-screen';
 import ImageGallery from './image-gallery';
 
 // Checks if all the images in the image gallery have been loaded to the DOM
@@ -21,82 +22,103 @@ class DisplaySearchResults extends Component {
 
   state = {
     pixabayImages: [],
-    pixabayResponseError: null,
+    pixabayConnectionError: null,
+    noImagesReturnedError: null,
     imagesAreLoading: true,
   };
 
-  componentDidMount = () => {
-    const { searchQuery } = this.props;
-    queryPixabay(searchQuery).then(pixabayImages => {
-      if (pixabayImages === null) {
-        return this.setState(() => ({
-          pixabayResponseError: `I'm sorry, there was an error connecting to the Pixabay database. Please refresh the page and try your search again.`,
+  // Calls the Pixabay database API with the user's inputted search
+  // then sets the state depending on what Pixabay returns
+  performPixabaySearch = searchQuery => {
+    queryPixabay(searchQuery)
+      // if an error is returned
+      .catch(() =>
+        this.setState(() => ({
+          pixabayConnectionError: true,
+          noImagesReturnedError: false,
           imagesAreLoading: false,
+        }))
+      )
+      // if the promise returns an empty array
+      .then(pixabayImages => {
+        if (pixabayImages.length === 0) {
+          return this.setState(() => ({
+            pixabayConnectionError: false,
+            noImagesReturnedError: true,
+            imagesAreLoading: false,
+          }));
+        }
+        // if the promise returns an array of objects
+        return this.setState(() => ({
+          pixabayImages,
+          pixabayConnectionError: false,
+          noImagesReturnedError: false,
+          imagesAreLoading: true,
         }));
-      }
-      return this.setState(() => ({
-        pixabayImages,
-      }));
-    });
+      });
   };
 
+  // query Pixabay when the component mounts
+  componentDidMount = () => {
+    const { searchQuery } = this.props;
+    this.performPixabaySearch(searchQuery);
+  };
+
+  // query Pixabay when a new search is inputted
   componentDidUpdate = (prevProps, prevState) => {
     const { searchQuery: prevSearchQuery } = prevProps;
     const { searchQuery } = this.props;
 
     if (searchQuery !== prevSearchQuery) {
-      queryPixabay(searchQuery).then(pixabayImages => {
-        if (pixabayImages === null) {
-          return this.setState(() => ({
-            pixabayResponseError: `I'm sorry, there was an error connecting to the Pixabay database. Please refresh the page and try your search again.`,
-            imagesAreLoading: false,
-          }));
-        }
-        if (pixabayImages.length === 0) {
-          return this.setState(() => ({
-            pixabayResponseError: `I'm sorry, your search did not produce any results.`,
-            imagesAreLoading: false,
-          }));
-        }
-        return this.setState(() => ({
-          pixabayImages,
-          imagesAreLoading: true,
-        }));
-      });
+      this.performPixabaySearch(searchQuery);
     }
   };
 
-  // when imagesAreLoading = true, <LoadingScreen /> is visible
+  // calls areImagesStillLoading, which sets the state imagesAreLoading to true or false
   handleImagesLoaded = () => {
     this.setState({
       imagesAreLoading: areImagesStillLoading(this.galleryElement),
     });
   };
 
+  // when imagesAreLoading = true, <FadeLoader /> is displayed on render
   renderLoadingScreen() {
     const { imagesAreLoading } = this.state;
-    return imagesAreLoading ? <LoadingScreen /> : null;
+    return imagesAreLoading ? <FadeLoader /> : null;
   }
 
   render() {
-    console.log('............. DisplaySearchResults RENDERED.............');
+    const { searchQuery } = this.props;
     const {
       pixabayImages,
-      pixabayResponseError,
+      pixabayConnectionError,
+      noImagesReturnedError,
       imagesAreLoading,
     } = this.state;
 
-    if (pixabayResponseError) {
+    if (pixabayConnectionError) {
       return (
         <div>
-          <p>{pixabayResponseError}</p>
+          <p>
+            There was an error connecting to Pixabay's database. Please refresh
+            the page and try your search again. If this error persists, please
+            check if <a href="https://pixabay.com/">pixabay.com</a> is down for
+            maintenance.
+          </p>
         </div>
       );
     }
 
-    // if (pixabayImages === []) {
-    //   console.log('pixabayImage is an empty array.');
-    // }
+    if (noImagesReturnedError) {
+      return (
+        <div>
+          <p>
+            Your search <b>{searchQuery}</b> did not match any images. Please
+            try a different search.
+          </p>
+        </div>
+      );
+    }
 
     return (
       <div
