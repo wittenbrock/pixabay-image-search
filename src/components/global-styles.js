@@ -2,6 +2,8 @@ import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyles = createGlobalStyle`
 
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
 *,
 *::before,
 *::after {
@@ -10,9 +12,14 @@ const GlobalStyles = createGlobalStyle`
 
 html {
   box-sizing: border-box;
-  font-size: 100%;
+  font-size: 62.5%;
   background-color: #323638;
   color: #ffffff;
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  font-size: 1.6rem;
 }
 
 a {
@@ -25,6 +32,17 @@ img {
   max-width: 100%;
   height: auto;
 }
+
+input {
+  border: 0px;
+}
+
+button {
+  border: 0px;
+}
+
+textarea, select, input, button { outline: none; }
+
 `;
 
 export default GlobalStyles;

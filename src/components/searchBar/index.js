@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
+import { StyledForm, StyledInput, StyledButton } from './style';
+import { ScreenReaderOnly } from '../helper-styles';
 // Stores user's input as inputtedSearch,
 // then sends it to App, its parent component, where it's stored as searchQuery
 class SearchBar extends Component {
@@ -36,19 +37,21 @@ class SearchBar extends Component {
   render() {
     const { inputtedSearch } = this.state;
     return (
-      <form onSubmit={this.handleSubmit}>
-        <label htmlFor="search-query">
-          <input
-            id="search-query"
-            type="text"
-            onChange={this.handleChange}
-            placeholder="Search Pixabay images"
-          />
-        </label>
-        <button type="submit" disabled={!inputtedSearch}>
-          Search
-        </button>
-      </form>
+      <StyledForm onSubmit={this.handleSubmit}>
+        <ScreenReaderOnly as="label" htmlFor="search-query">
+          Enter your image search
+        </ScreenReaderOnly>
+        <StyledInput
+          id="search-query"
+          type="text"
+          onChange={this.handleChange}
+          placeholder="Search images"
+        />
+
+        <StyledButton type="submit" disabled={!inputtedSearch}>
+          <ScreenReaderOnly>Search</ScreenReaderOnly>
+        </StyledButton>
+      </StyledForm>
     );
   }
 }
