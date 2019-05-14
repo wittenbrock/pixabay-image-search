@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FadeLoader } from 'react-spinners';
-import queryPixabay from '../utilities/pixabay-api';
-import ImageGallery from './image-gallery';
+import queryPixabay from '../../utilities/pixabay-api';
+import ImageGallery from '../imageGallery';
 
 // Check if all the images have loaded to the DOM
 // input: HTML DOM node | output: true or false boolean
@@ -22,6 +22,8 @@ class DisplaySearchResults extends Component {
     pixabayImages: [],
     pixabayConnectionError: null,
     noImagesWereReturned: null,
+    // isLargeModalVisible: null,
+    idOfClickedImage: null,
   };
 
   // Calls the Pixabay database API with the user's search
@@ -68,6 +70,8 @@ class DisplaySearchResults extends Component {
         pixabayImages: [],
         pixabayConnectionError: null,
         noImagesWereReturned: null,
+        // isLargeModalVisible: null,
+        idOfClickedImage: null,
       }));
       // start a new search
       this.performPixabaySearch(searchQuery);
@@ -82,10 +86,39 @@ class DisplaySearchResults extends Component {
   };
 
   // display the loading animation as the images are loading to the DOM
-  renderLoadingAnimation() {
+  renderLoadingAnimation = () => {
     const { imagesAreLoading } = this.props;
     return imagesAreLoading ? <FadeLoader /> : null;
-  }
+  };
+
+  // handleTogglingModalImage = idOfClickedImage => {
+  //   const { pixabayImages } = this.state;
+  //   console.log('handleTogglingModalImage id:', id);
+  //   const clickedImage = pixabayImages.find(
+  //     imgData => imgData.id === id
+  //   );
+  //   console.log('clicked image big boi url:', clickedImage.largeImageURL);
+  //   this.setState(() => ({
+  //     isLargeModalVisible: trueOrFalse,
+  //     idOfClickedImage: clickedImage.largeImageURL,
+  //   }));
+  // };
+
+  handleTogglingModalImage = id => {
+    this.setState(() => ({
+      idOfClickedImage: id,
+    }));
+  };
+
+  renderModalImage = () => {
+    const { pixabayImages, idOfClickedImage } = this.state;
+    const clickedImage = pixabayImages.find(
+      imgData => imgData.id === idOfClickedImage
+    );
+    return idOfClickedImage !== null ? (
+      <img src={clickedImage.webformatURL} alt={clickedImage.tags} />
+    ) : null;
+  };
 
   render() {
     const { searchQuery, imagesAreLoading } = this.props;
@@ -126,10 +159,12 @@ class DisplaySearchResults extends Component {
         }}
       >
         {this.renderLoadingAnimation()}
+        {this.renderModalImage()}
         <ImageGallery
           pixabayImages={pixabayImages}
           handleImagesLoaded={this.handleImagesLoaded}
           imagesAreLoading={imagesAreLoading}
+          handleTogglingModalImage={this.handleTogglingModalImage}
         />
       </div>
     );

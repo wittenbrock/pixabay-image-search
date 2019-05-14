@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import SearchBar from './search-bar';
-import DisplaySearchResults from './display-search-results';
+import SearchBar from '../searchBar';
+import DisplaySearchResults from '../displaySearchResults';
 
 /*
+  Component Tree
+
   app
     -> search-bar 
     -> display-image-results
