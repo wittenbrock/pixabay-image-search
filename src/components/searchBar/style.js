@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import '../../assets/icon-search-disabled.svg';
-import '../../assets/icon-search-enabled.svg';
-import '../../assets/icon-search-active.svg';
+import '../../assets/icon-chevron-right-circle.svg';
+import '../../assets/icon-chevron-right-circle-active.svg';
 
 export const StyledForm = styled.form`
   display: flex;
@@ -19,8 +19,7 @@ export const StyledInput = styled.input`
 `;
 
 export const StyledButton = styled.button`
-  background-color: #4d87ec;
-  background-image: url('/assets/icon-search-enabled.svg');
+  background-image: url('/assets/icon-chevron-right-circle.svg');
   background-repeat: no-repeat;
   background-position: center;
   border-top-right-radius: 2.5rem;
@@ -31,11 +30,9 @@ export const StyledButton = styled.button`
 
   &:disabled {
     background-image: url('/assets/icon-search-disabled.svg');
-    background-color: white;
   }
 
   &:active {
-    background-image: url('/assets/icon-search-active.svg');
-    background-color: #56a45c;
+    background-image: url('/assets/icon-chevron-right-circle-active.svg');
   }
 `;

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { FadeLoader } from 'react-spinners';
 import queryPixabay from '../../utilities/pixabay-api';
 import ImageGallery from '../imageGallery';
+import './grid-styles.css';
 
 // Check if all the images have loaded to the DOM
 // input: HTML DOM node | output: true or false boolean
@@ -78,10 +79,20 @@ class DisplaySearchResults extends Component {
     }
   };
 
+  // loops through all the images in the gallery and adds a css grid class
+  buildCssGrid = htmlImageGallery => {
+    const htmlImageElements = [...htmlImageGallery.querySelectorAll('img')];
+
+    htmlImageElements.forEach((image, number) =>
+      image.classList.add(`img${number}`)
+    );
+  };
+
   // After all the images have loaded to the DOM, set imagesAreLoading to false
   handleImagesLoaded = () => {
     const { setImagesAreLoadingTo } = this.props;
     const result = areImagesStillLoading(this.galleryElement);
+    this.buildCssGrid(this.galleryElement);
     setImagesAreLoadingTo(result);
   };
 

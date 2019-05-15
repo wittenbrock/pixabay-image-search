@@ -1,11 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const imgStyle = {
-  height: '30px',
-  width: '30px',
-};
-
 const PixabayImage = props => {
   // const { webformatURL, tags, webformatWidth, webformatHeight } = props;
   const {
@@ -16,19 +11,16 @@ const PixabayImage = props => {
     handleTogglingModalImage,
   } = props;
   return (
-    <div>
-      <img
-        style={imgStyle}
-        id={id}
-        src={webformatURL}
-        alt={tags}
-        onLoad={() => handleImagesLoaded()}
-        onError={() => handleImagesLoaded()}
-        onClick={() => handleTogglingModalImage(id)}
-        // width={webformatWidth}
-        // height={webformatHeight}
-      />
-    </div>
+    <img
+      id={id}
+      src={webformatURL}
+      alt={tags}
+      onLoad={() => handleImagesLoaded()}
+      onError={() => handleImagesLoaded()}
+      onClick={() => handleTogglingModalImage(id)}
+      // width={webformatWidth}
+      // height={webformatHeight}
+    />
   );
 };
 

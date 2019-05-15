@@ -2,9 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import PixabayImage from '../image';
+import { FigureStyles } from './style';
 
-const Row = styled.div`
-  display: ${props => (props.imagesAreLoading ? 'none' : 'flex')};
+const StyledFigure = styled.figure`
+  ${FigureStyles};
 `;
 
 const ImageGallery = props => {
@@ -15,7 +16,7 @@ const ImageGallery = props => {
     handleTogglingModalImage,
   } = props;
   return (
-    <Row imagesAreLoading={imagesAreLoading}>
+    <StyledFigure imagesAreLoading={imagesAreLoading}>
       {pixabayImages.map(imageData => {
         const {
           id,
@@ -37,7 +38,7 @@ const ImageGallery = props => {
           />
         );
       })}
-    </Row>
+    </StyledFigure>
   );
 };
 
