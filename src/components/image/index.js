@@ -2,13 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const PixabayImage = props => {
-  // const { webformatURL, tags, webformatWidth, webformatHeight } = props;
   const {
     id,
-    webformatURL,
     tags,
+    webformatURL,
     handleImagesLoaded,
-    handleTogglingModalImage,
+    handleShowingModal,
   } = props;
   return (
     <img
@@ -17,9 +16,7 @@ const PixabayImage = props => {
       alt={tags}
       onLoad={() => handleImagesLoaded()}
       onError={() => handleImagesLoaded()}
-      onClick={() => handleTogglingModalImage(id)}
-      // width={webformatWidth}
-      // height={webformatHeight}
+      onClick={() => handleShowingModal(id)}
     />
   );
 };
@@ -29,9 +26,7 @@ PixabayImage.propTypes = {
   webformatURL: PropTypes.string.isRequired,
   tags: PropTypes.string.isRequired,
   handleImagesLoaded: PropTypes.func.isRequired,
-  handleTogglingModalImage: PropTypes.func.isRequired,
-  // webformatWidth: PropTypes.number.isRequired,
-  // webformatHeight: PropTypes.number.isRequired,
+  handleShowingModal: PropTypes.func.isRequired,
 };
 
 export default PixabayImage;

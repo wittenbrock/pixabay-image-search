@@ -13,28 +13,20 @@ const ImageGallery = props => {
     pixabayImages,
     handleImagesLoaded,
     imagesAreLoading,
-    handleTogglingModalImage,
+    handleShowingModal,
   } = props;
   return (
     <StyledFigure imagesAreLoading={imagesAreLoading}>
       {pixabayImages.map(imageData => {
-        const {
-          id,
-          tags,
-          webformatURL,
-          webformatWidth,
-          webformatHeight,
-        } = imageData;
+        const { id, tags, webformatURL } = imageData;
         return (
           <PixabayImage
             key={id}
             id={id}
             webformatURL={webformatURL}
             tags={tags}
-            webformatWidth={webformatWidth}
-            webformatHeight={webformatHeight}
             handleImagesLoaded={handleImagesLoaded}
-            handleTogglingModalImage={handleTogglingModalImage}
+            handleShowingModal={handleShowingModal}
           />
         );
       })}
@@ -47,7 +39,7 @@ ImageGallery.propTypes = {
   pixabayImages: PropTypes.arrayOf(PropTypes.object).isRequired,
   handleImagesLoaded: PropTypes.func.isRequired,
   imagesAreLoading: PropTypes.bool.isRequired,
-  handleTogglingModalImage: PropTypes.func.isRequired,
+  handleShowingModal: PropTypes.func.isRequired,
 };
 
 export default ImageGallery;

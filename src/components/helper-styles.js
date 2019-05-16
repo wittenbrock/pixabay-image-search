@@ -10,3 +10,10 @@ export const ScreenReaderOnly = styled.span`
   position: absolute;
   width: 1px;
 `;
+
+export const CenteredColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;

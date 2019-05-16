@@ -43,6 +43,10 @@ button {
 
 textarea, select, input, button { outline: none; }
 
+figure {
+  margin: 0;
+}
+
 `;
 
 export default GlobalStyles;

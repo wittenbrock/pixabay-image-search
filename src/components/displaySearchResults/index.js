@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { FadeLoader } from 'react-spinners';
 import queryPixabay from '../../utilities/pixabay-api';
 import ImageGallery from '../imageGallery';
+import Modal from '../modal/index';
 import './grid-styles.css';
 
 // Check if all the images have loaded to the DOM
@@ -23,7 +24,7 @@ class DisplaySearchResults extends Component {
     pixabayImages: [],
     pixabayConnectionError: null,
     noImagesWereReturned: null,
-    // isLargeModalVisible: null,
+    isModalVisible: null,
     idOfClickedImage: null,
   };
 
@@ -71,7 +72,7 @@ class DisplaySearchResults extends Component {
         pixabayImages: [],
         pixabayConnectionError: null,
         noImagesWereReturned: null,
-        // isLargeModalVisible: null,
+        isModalVisible: null,
         idOfClickedImage: null,
       }));
       // start a new search
@@ -79,7 +80,7 @@ class DisplaySearchResults extends Component {
     }
   };
 
-  // loops through all the images in the gallery and adds a css grid class
+  // loops through all the images in the gallery and add a css grid class
   buildCssGrid = htmlImageGallery => {
     const htmlImageElements = [...htmlImageGallery.querySelectorAll('img')];
 
@@ -88,11 +89,11 @@ class DisplaySearchResults extends Component {
     );
   };
 
-  // After all the images have loaded to the DOM, set imagesAreLoading to false
+  // after all the images have loaded to the DOM, set imagesAreLoading to false
   handleImagesLoaded = () => {
     const { setImagesAreLoadingTo } = this.props;
-    const result = areImagesStillLoading(this.galleryElement);
-    this.buildCssGrid(this.galleryElement);
+    const result = areImagesStillLoading(this.imageGalleryRef);
+    this.buildCssGrid(this.imageGalleryRef);
     setImagesAreLoadingTo(result);
   };
 
@@ -102,33 +103,40 @@ class DisplaySearchResults extends Component {
     return imagesAreLoading ? <FadeLoader /> : null;
   };
 
-  // handleTogglingModalImage = idOfClickedImage => {
-  //   const { pixabayImages } = this.state;
-  //   console.log('handleTogglingModalImage id:', id);
-  //   const clickedImage = pixabayImages.find(
-  //     imgData => imgData.id === id
-  //   );
-  //   console.log('clicked image big boi url:', clickedImage.largeImageURL);
-  //   this.setState(() => ({
-  //     isLargeModalVisible: trueOrFalse,
-  //     idOfClickedImage: clickedImage.largeImageURL,
-  //   }));
-  // };
-
-  handleTogglingModalImage = id => {
+  showModal = id => {
     this.setState(() => ({
       idOfClickedImage: id,
+      isModalVisible: true,
+    }));
+  };
+
+  hideModal = () => {
+    this.setState(() => ({
+      isModalVisible: false,
     }));
   };
 
   renderModalImage = () => {
-    const { pixabayImages, idOfClickedImage } = this.state;
+    const { pixabayImages, isModalVisible, idOfClickedImage } = this.state;
     const clickedImage = pixabayImages.find(
       imgData => imgData.id === idOfClickedImage
     );
-    return idOfClickedImage !== null ? (
-      <img src={clickedImage.webformatURL} alt={clickedImage.tags} />
+    return isModalVisible ? (
+      <Modal
+        tags={clickedImage.tags}
+        smallImageUrl={clickedImage.webformatURL}
+        smallImageWidth={clickedImage.webformatWidth}
+        smallImageHeight={clickedImage.webformatHeight}
+        largeImageUrl={clickedImage.largeImageURL}
+        largeImageWidth={clickedImage.imageWidth}
+        largeImageHeight={clickedImage.imageHeight}
+        handleClosingModal={this.hideModal}
+      />
     ) : null;
+  };
+
+  setImageGalleryRef = htmlElement => {
+    this.imageGalleryRef = htmlElement;
   };
 
   render() {
@@ -141,41 +149,33 @@ class DisplaySearchResults extends Component {
 
     if (pixabayConnectionError) {
       return (
-        <div>
-          <p>
-            There was an error connecting to Pixabay's database. Please refresh
-            the page and try your search again. If this error persists, please
-            check if <a href="https://pixabay.com/">pixabay.com</a> is down for
-            maintenance.
-          </p>
-        </div>
+        <p>
+          There was an error connecting to Pixabay's database. Please refresh
+          the page and try your search again. If this error persists, please
+          check if <a href="https://pixabay.com/">pixabay.com</a> is down for
+          maintenance.
+        </p>
       );
     }
 
     if (noImagesWereReturned) {
       return (
-        <div>
-          <p>
-            Your search <b>{searchQuery}</b> did not match any images. Please
-            try a different search.
-          </p>
-        </div>
+        <p>
+          Your search <b>{searchQuery}</b> did not match any images. Please try
+          a different search.
+        </p>
       );
     }
 
     return (
-      <div
-        ref={element => {
-          this.galleryElement = element;
-        }}
-      >
+      <div ref={this.setImageGalleryRef}>
         {this.renderLoadingAnimation()}
         {this.renderModalImage()}
         <ImageGallery
           pixabayImages={pixabayImages}
           handleImagesLoaded={this.handleImagesLoaded}
           imagesAreLoading={imagesAreLoading}
-          handleTogglingModalImage={this.handleTogglingModalImage}
+          handleShowingModal={this.showModal}
         />
       </div>
     );
