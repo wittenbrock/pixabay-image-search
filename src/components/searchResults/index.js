@@ -4,6 +4,7 @@ import { FadeLoader } from 'react-spinners';
 import queryPixabay from '../../utilities/pixabay-api';
 import ImageGallery from '../imageGallery';
 import Modal from '../modal/index';
+import SearchBar from '../searchBar/index';
 import './grid-styles.css';
 
 // Check if all the images have loaded to the DOM
@@ -15,9 +16,10 @@ function areImagesStillLoading(htmlImageGallery) {
 
 class DisplaySearchResults extends Component {
   static propTypes = {
-    searchQuery: PropTypes.string,
-    setImagesAreLoadingTo: PropTypes.func,
-    imagesAreLoading: PropTypes.bool,
+    searchQuery: PropTypes.string.isRequired,
+    setImagesAreLoadingTo: PropTypes.func.isRequired,
+    imagesAreLoading: PropTypes.bool.isRequired,
+    handleSubmit: PropTypes.func.isRequired,
   };
 
   state = {
@@ -140,7 +142,12 @@ class DisplaySearchResults extends Component {
   };
 
   render() {
-    const { searchQuery, imagesAreLoading } = this.props;
+    const {
+      searchQuery,
+      imagesAreLoading,
+      handleSubmit,
+      setImagesAreLoadingTo,
+    } = this.props;
     const {
       pixabayImages,
       pixabayConnectionError,
@@ -168,15 +175,23 @@ class DisplaySearchResults extends Component {
     }
 
     return (
-      <div ref={this.setImageGalleryRef}>
+      <div>
+        <header>
+          <SearchBar
+            onSubmit={handleSubmit}
+            setImagesAreLoadingTo={setImagesAreLoadingTo}
+          />
+        </header>
         {this.renderLoadingAnimation()}
         {this.renderModalImage()}
-        <ImageGallery
-          pixabayImages={pixabayImages}
-          handleImagesLoaded={this.handleImagesLoaded}
-          imagesAreLoading={imagesAreLoading}
-          handleShowingModal={this.showModal}
-        />
+        <div ref={this.setImageGalleryRef}>
+          <ImageGallery
+            pixabayImages={pixabayImages}
+            handleImagesLoaded={this.handleImagesLoaded}
+            imagesAreLoading={imagesAreLoading}
+            handleShowingModal={this.showModal}
+          />
+        </div>
       </div>
     );
   }

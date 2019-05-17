@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
-import SearchBar from '../searchBar';
-import DisplaySearchResults from '../displaySearchResults';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import HomePage from '../homePage/index';
+import SearchResults from '../searchResults/index';
+import Test from './test';
+// import SearchBar from '../searchBar';
+// import DisplaySearchResults from '../displaySearchResults';
 
 /*
   Component Tree
@@ -34,20 +38,51 @@ class App extends Component {
 
   render() {
     const { searchQuery, imagesAreLoading } = this.state;
+    // return (
+    // <>
+    //   <SearchBar
+    // onSubmit={this.handleSubmit}
+    // setImagesAreLoadingTo={this.setImagesAreLoadingTo}
+    //   />
+    //   {searchQuery !== '' && (
+    //     <DisplaySearchResults
+    // searchQuery={searchQuery}
+    // imagesAreLoading={imagesAreLoading}
+    // setImagesAreLoadingTo={this.setImagesAreLoadingTo}
+    //     />
+    //   )}
+    // </>
+    // );
     return (
-      <div>
-        <SearchBar
-          onSubmit={this.handleSubmit}
-          setImagesAreLoadingTo={this.setImagesAreLoadingTo}
-        />
-        {searchQuery !== '' && (
-          <DisplaySearchResults
-            searchQuery={searchQuery}
-            imagesAreLoading={imagesAreLoading}
-            setImagesAreLoadingTo={this.setImagesAreLoadingTo}
+      <Router>
+        <Switch>
+          <Route
+            exact
+            path="/"
+            render={props => (
+              <HomePage
+                {...props}
+                handleSubmit={this.handleSubmit}
+                setImagesAreLoadingTo={this.setImagesAreLoadingTo}
+              />
+            )}
           />
-        )}
-      </div>
+          <Route
+            path="/search-results"
+            render={props => (
+              <SearchResults
+                {...props}
+                searchQuery={searchQuery}
+                imagesAreLoading={imagesAreLoading}
+                setImagesAreLoadingTo={this.setImagesAreLoadingTo}
+                handleSubmit={this.handleSubmit}
+                setImageAreLoadingTo={this.setImagesAreLoadingTo}
+              />
+            )}
+          />
+          <Route component={Test} />
+        </Switch>
+      </Router>
     );
   }
 }

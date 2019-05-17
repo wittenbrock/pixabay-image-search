@@ -2,10 +2,11 @@ import { css } from 'styled-components';
 
 export const FigureStyles = css`
   display: ${p => (p.imagesAreLoading ? 'none' : 'grid')};
-  max-width: 100%;
   place-items: center;
   grid-row-gap: 1.6rem;
   grid-column-gap: 1.6rem;
+  max-width: 100%;
+  margin: 3rem;
   grid-template-areas:
     'img0  img0  img0  img0  img0  img0  img1  img1  img1  img1  img1  img1' /* 2 images */
     'img2  img2  img2  img3  img3  img3  img4  img4  img4  img5  img5  img5' /* 4 images */

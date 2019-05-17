@@ -13,8 +13,8 @@ const GlobalStyles = createGlobalStyle`
 html {
   box-sizing: border-box;
   font-size: 62.5%;
-  background-color: #323638;
-  color: #ffffff;
+  background-color: #f0f0f0;
+  color: black;
   font-family: 'Roboto', sans-serif;
 }
 

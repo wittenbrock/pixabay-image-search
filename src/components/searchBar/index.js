@@ -6,8 +6,9 @@ import { ScreenReaderOnly } from '../helper-styles';
 // then sends it to App, its parent component, where it's stored as searchQuery
 class SearchBar extends Component {
   static propTypes = {
-    onSubmit: PropTypes.func,
-    setImagesAreLoadingTo: PropTypes.func,
+    onSubmit: PropTypes.func.isRequired,
+    setImagesAreLoadingTo: PropTypes.func.isRequired,
+    handleRedirect: PropTypes.func,
   };
 
   state = {
@@ -23,12 +24,15 @@ class SearchBar extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    const { onSubmit, setImagesAreLoadingTo } = this.props;
+    const { onSubmit, setImagesAreLoadingTo, handleRedirect } = this.props;
     const { inputtedSearch, prevInputtedSearch } = this.state;
 
     if (inputtedSearch !== prevInputtedSearch) {
       onSubmit(inputtedSearch);
       setImagesAreLoadingTo(true);
+      if (handleRedirect) {
+        handleRedirect();
+      }
     }
 
     this.setState(() => ({ prevInputtedSearch: inputtedSearch }));

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { StyledImage } from './style';
 
 const PixabayImage = props => {
   const {
@@ -10,7 +11,7 @@ const PixabayImage = props => {
     handleShowingModal,
   } = props;
   return (
-    <img
+    <StyledImage
       id={id}
       src={webformatURL}
       alt={tags}
