@@ -5,6 +5,8 @@ import queryPixabay from '../../utilities/pixabay-api';
 import ImageGallery from '../imageGallery';
 import Modal from '../modal/index';
 import SearchBar from '../searchBar/index';
+import Error from '../error/index';
+import { StyledAnchor, SearchResultsContainer, Centered } from './style';
 import './grid-styles.css';
 
 // Check if all the images have loaded to the DOM
@@ -102,7 +104,11 @@ class DisplaySearchResults extends Component {
   // display the loading animation as the images are loading to the DOM
   renderLoadingAnimation = () => {
     const { imagesAreLoading } = this.props;
-    return imagesAreLoading ? <FadeLoader /> : null;
+    return imagesAreLoading ? (
+      <Centered>
+        <FadeLoader />
+      </Centered>
+    ) : null;
   };
 
   showModal = id => {
@@ -156,30 +162,42 @@ class DisplaySearchResults extends Component {
 
     if (pixabayConnectionError) {
       return (
-        <p>
-          There was an error connecting to Pixabay's database. Please refresh
-          the page and try your search again. If this error persists, please
-          check if <a href="https://pixabay.com/">pixabay.com</a> is down for
-          maintenance.
-        </p>
+        <Error
+          handleSubmit={handleSubmit}
+          setImagesAreLoadingTo={setImagesAreLoadingTo}
+          errorMessage={[
+            `There was an error connecting to Pixabay's database. Please refresh the
+        page and try your search again. If this error persists, please check if `,
+            <StyledAnchor href="https://www.pixabay.com/">
+              pixabay.com
+            </StyledAnchor>,
+            ` is down for maintenance.`,
+          ]}
+        />
       );
     }
 
     if (noImagesWereReturned) {
       return (
-        <p>
-          Your search <b>{searchQuery}</b> did not match any images. Please try
-          a different search.
-        </p>
+        <Error
+          handleSubmit={handleSubmit}
+          setImagesAreLoadingTo={setImagesAreLoadingTo}
+          errorMessage={[
+            `Your search `,
+            <strong>{searchQuery}</strong>,
+            ` did not match any images.`,
+          ]}
+        />
       );
     }
 
     return (
-      <div>
+      <SearchResultsContainer>
         <header>
           <SearchBar
             onSubmit={handleSubmit}
             setImagesAreLoadingTo={setImagesAreLoadingTo}
+            placeholderText="Search images"
           />
         </header>
         {this.renderLoadingAnimation()}
@@ -192,7 +210,7 @@ class DisplaySearchResults extends Component {
             handleShowingModal={this.showModal}
           />
         </div>
-      </div>
+      </SearchResultsContainer>
     );
   }
 }

@@ -9,6 +9,7 @@ class SearchBar extends Component {
     onSubmit: PropTypes.func.isRequired,
     setImagesAreLoadingTo: PropTypes.func.isRequired,
     handleRedirect: PropTypes.func,
+    placeholderText: PropTypes.string.isRequired,
   };
 
   state = {
@@ -40,16 +41,17 @@ class SearchBar extends Component {
 
   render() {
     const { inputtedSearch } = this.state;
+    const { placeholderText } = this.props;
     return (
       <StyledForm onSubmit={this.handleSubmit}>
         <ScreenReaderOnly as="label" htmlFor="search-query">
-          Enter your image search
+          Enter your image search query
         </ScreenReaderOnly>
         <StyledInput
           id="search-query"
           type="text"
           onChange={this.handleChange}
-          placeholder="Search images"
+          placeholder={placeholderText}
         />
 
         <StyledButton type="submit" disabled={!inputtedSearch}>

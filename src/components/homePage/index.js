@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Redirect, Link } from 'react-router-dom';
-import { HomeContainer } from './style';
+import { Redirect } from 'react-router-dom';
+import { HomeContainer, PixabayLogo } from './style';
 import '../../assets/icon-pixabay.svg';
 
 import SearchBar from '../searchBar/index';
@@ -27,24 +27,20 @@ class HomePage extends Component {
 
     return (
       <HomeContainer>
-        <Link
-          to="https://pixabay.com/"
+        <a
+          href="https://www.pixabay.com/"
           target="_blank"
           rel="noopener noreferrer"
         >
           <h1>
-            <img
-              src="/assets/icon-pixabay.svg"
-              alt="Pixabay"
-              height="35px"
-              width="100px"
-            />
+            <PixabayLogo src="/assets/icon-pixabay.svg" alt="Pixabay" />
           </h1>
-        </Link>
+        </a>
         <SearchBar
           onSubmit={handleSubmit}
           setImagesAreLoadingTo={setImagesAreLoadingTo}
           handleRedirect={this.handleRedirect}
+          placeholderText="Search over 1 million images"
         />
       </HomeContainer>
     );
