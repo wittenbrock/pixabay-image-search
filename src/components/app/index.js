@@ -4,7 +4,7 @@ import HomePage from '../homePage/index';
 import SearchResults from '../searchResults/index';
 import Test from './test';
 // import SearchBar from '../searchBar';
-// import DisplaySearchResults from '../displaySearchResults';
+// import SearchResults from '../SearchResults';
 
 /*
   Component Tree
@@ -30,7 +30,6 @@ class App extends Component {
   };
 
   setImagesAreLoadingTo = trueOrFalse => {
-    console.log('imagesAreLoading was set to:', trueOrFalse);
     this.setState(() => ({
       imagesAreLoading: trueOrFalse,
     }));
@@ -45,7 +44,7 @@ class App extends Component {
     // setImagesAreLoadingTo={this.setImagesAreLoadingTo}
     //   />
     //   {searchQuery !== '' && (
-    //     <DisplaySearchResults
+    //     <SearchResults
     // searchQuery={searchQuery}
     // imagesAreLoading={imagesAreLoading}
     // setImagesAreLoadingTo={this.setImagesAreLoadingTo}
@@ -64,6 +63,7 @@ class App extends Component {
                 {...props}
                 handleSubmit={this.handleSubmit}
                 setImagesAreLoadingTo={this.setImagesAreLoadingTo}
+                searchQuery={searchQuery}
               />
             )}
           />

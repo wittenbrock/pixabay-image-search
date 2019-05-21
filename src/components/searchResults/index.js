@@ -16,7 +16,7 @@ function areImagesStillLoading(htmlImageGallery) {
   return !htmlImageElements.every(image => image.complete);
 }
 
-class DisplaySearchResults extends Component {
+class SearchResults extends Component {
   static propTypes = {
     searchQuery: PropTypes.string.isRequired,
     setImagesAreLoadingTo: PropTypes.func.isRequired,
@@ -34,9 +34,9 @@ class DisplaySearchResults extends Component {
 
   // Calls the Pixabay database API with the user's search
   // then sets the state depending on what Pixabay returns
-  performPixabaySearch = searchQuery => {
+  performPixabaySearch = userSearch => {
     const { setImagesAreLoadingTo } = this.props;
-    queryPixabay(searchQuery)
+    queryPixabay(userSearch)
       // if a connection error occurred
       .catch(() => {
         setImagesAreLoadingTo(false);
@@ -62,13 +62,16 @@ class DisplaySearchResults extends Component {
   // after the component mounts query Pixabay
   componentDidMount = () => {
     const { searchQuery } = this.props;
-    this.performPixabaySearch(searchQuery);
+
+    if (searchQuery !== undefined && searchQuery !== '') {
+      this.performPixabaySearch(searchQuery);
+    }
   };
 
   // after a new search is inputted, reset the state, then query Pixabay
   componentDidUpdate = prevProps => {
-    const { searchQuery: prevSearchQuery } = prevProps;
     const { searchQuery } = this.props;
+    const { searchQuery: prevSearchQuery } = prevProps;
 
     if (searchQuery !== prevSearchQuery) {
       // reset the state before starting a new search
@@ -148,8 +151,8 @@ class DisplaySearchResults extends Component {
   };
 
   render() {
+    const { searchQuery } = this.props;
     const {
-      searchQuery,
       imagesAreLoading,
       handleSubmit,
       setImagesAreLoadingTo,
@@ -166,8 +169,7 @@ class DisplaySearchResults extends Component {
           handleSubmit={handleSubmit}
           setImagesAreLoadingTo={setImagesAreLoadingTo}
           errorMessage={[
-            `There was an error connecting to Pixabay's database. Please refresh the
-        page and try your search again. If this error persists, please check if `,
+            `There was an error connecting to Pixabay's database. If this error persists, please check if `,
             <StyledAnchor href="https://www.pixabay.com/">
               pixabay.com
             </StyledAnchor>,
@@ -199,6 +201,9 @@ class DisplaySearchResults extends Component {
             setImagesAreLoadingTo={setImagesAreLoadingTo}
             placeholderText="Search images"
           />
+          <p>
+            You searched for: <strong>{searchQuery}</strong>
+          </p>
         </header>
         {this.renderLoadingAnimation()}
         {this.renderModalImage()}
@@ -215,4 +220,4 @@ class DisplaySearchResults extends Component {
   }
 }
 
-export default DisplaySearchResults;
+export default SearchResults;

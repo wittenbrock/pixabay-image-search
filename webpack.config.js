@@ -4,6 +4,7 @@ import CleanWebpackPlugin from 'clean-webpack-plugin';
 import TerserJSPlugin from 'terser-webpack-plugin';
 import Dotenv from 'dotenv-webpack';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
 
 const mode = process.env.NODE_ENV || 'production';
 
@@ -19,12 +20,14 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: '[name].bundle.[chunkhash].js',
+    publicPath: '/',
   },
 
   // ------------------------------------
   // Development Server
   // ------------------------------------
   devServer: {
+    historyApiFallback: true,
     contentBase: path.join(__dirname, 'build'),
     compress: true,
     port: 9000,
@@ -111,5 +114,6 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: 'style.[contenthash].css',
     }),
+    new CopyWebpackPlugin([{ from: '_redirects' }]),
   ], // plugins array ends
 }; // module.exports ends

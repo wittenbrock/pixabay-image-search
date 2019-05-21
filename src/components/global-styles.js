@@ -13,7 +13,7 @@ const GlobalStyles = createGlobalStyle`
 html {
   box-sizing: border-box;
   font-size: 62.5%;
-  background-color: #f0f0f0;
+  background: #f6f6f6;
   color: black;
   font-family: 'Roboto', sans-serif;
 }
@@ -35,6 +35,11 @@ img {
 
 input {
   border: 0px;
+}
+
+::placeholder {
+  color: white;
+  opacity: 1;
 }
 
 button {

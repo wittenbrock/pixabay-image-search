@@ -1,7 +1,58 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { StyledForm, StyledInput, StyledButton } from './style';
+import styled from 'styled-components';
+import { StyledForm } from './style';
 import { ScreenReaderOnly } from '../helper-styles';
+
+const StyledButton = styled.button`
+  background-image: url('/assets/icon-chevron-right-circle.svg');
+  background-repeat: no-repeat;
+  background-position: left center;
+  border-top-right-radius: 2.5rem;
+  border-bottom-right-radius: 2.5rem;
+  border: 2px solid white;
+  border-left: none;
+  height: 4.4rem;
+  width: 5rem;
+  background-color: ${p => (p.inputtedSearch !== '' ? 'white' : 'transparent')};
+
+  &:disabled {
+    background-image: url('/assets/icon-search-disabled.svg');
+  }
+
+  &:active {
+    background-image: url('/assets/icon-chevron-right-circle-active.svg');
+  }
+
+  @media screen and (min-width: 600px) {
+    background-position: center;
+  }
+`;
+
+const StyledInput = styled.input`
+  border-top-left-radius: 2.5rem;
+  border-bottom-left-radius: 2.5rem;
+  border: 2px solid white;
+  border-right: none;
+  width: 56rem;
+  height: 4.4rem;
+  padding-left: 1.8rem;
+  background-color: ${p => (p.inputtedSearch !== '' ? 'white' : 'transparent')};
+
+  &:focus {
+    background-color: white;
+    color: black;
+  }
+
+  &:focus ~ ${StyledButton} {
+    background-color: white;
+  }
+
+  @media screen and (min-width: 600px) {
+    padding-left: 2.8rem;
+  }
+`;
+
 // Stores user's input as inputtedSearch,
 // then sends it to App, its parent component, where it's stored as searchQuery
 class SearchBar extends Component {
@@ -40,7 +91,7 @@ class SearchBar extends Component {
   };
 
   render() {
-    const { inputtedSearch } = this.state;
+    const { inputtedSearch, prevInputtedSearch } = this.state;
     const { placeholderText } = this.props;
     return (
       <StyledForm onSubmit={this.handleSubmit}>
@@ -52,9 +103,14 @@ class SearchBar extends Component {
           type="text"
           onChange={this.handleChange}
           placeholder={placeholderText}
+          inputtedSearch={inputtedSearch}
         />
 
-        <StyledButton type="submit" disabled={!inputtedSearch}>
+        <StyledButton
+          type="submit"
+          disabled={!inputtedSearch}
+          inputtedSearch={inputtedSearch}
+        >
           <ScreenReaderOnly>Search</ScreenReaderOnly>
         </StyledButton>
       </StyledForm>

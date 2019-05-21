@@ -7,12 +7,16 @@ import '../../assets/icon-pixabay.svg';
 import SearchBar from '../searchBar/index';
 
 class HomePage extends Component {
+  static propTypes = {
+    handleSubmit: PropTypes.func.isRequired,
+    setImagesAreLoadingTo: PropTypes.func.isRequired,
+  };
+
   state = {
     toSearchResults: false,
   };
 
   handleRedirect = () => {
-    console.log('handleRedirect called');
     this.setState(() => ({
       toSearchResults: true,
     }));
@@ -46,10 +50,5 @@ class HomePage extends Component {
     );
   }
 }
-
-HomePage.propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
-  setImagesAreLoadingTo: PropTypes.func.isRequired,
-};
 
 export default HomePage;
