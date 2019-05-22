@@ -18,7 +18,7 @@ export const FigureStyles = css`
   }
 `;
 
-export const StyledParagraph = styled.p`
+export const StyledSpan = styled.span`
   display: flex;
   align-items: center;
   position: absolute;
@@ -46,11 +46,11 @@ export const ImageContainerStyles = css`
       cursor: pointer;
     }
 
-    &:hover ${StyledParagraph} {
+    &:hover ${StyledSpan} {
       opacity: 100;
     }
 
-    &:focus ${StyledParagraph} {
+    &:focus ${StyledSpan} {
       opacity: 100;
     }
 

@@ -6,7 +6,7 @@ import {
   FigureStyles,
   ImageContainerStyles,
   PaddingStyles,
-  StyledParagraph,
+  StyledSpan,
 } from './style';
 
 const StyledFigure = styled.figure`
@@ -56,9 +56,9 @@ const ImageGallery = props => {
               tags={tags}
               handleImagesLoaded={handleImagesLoaded}
             />
-            <StyledParagraph aria-hidden="true">
+            <StyledSpan aria-hidden="true">
               {imageWidth} x {imageHeight}
-            </StyledParagraph>
+            </StyledSpan>
           </ImageContainer>
         );
       })}
