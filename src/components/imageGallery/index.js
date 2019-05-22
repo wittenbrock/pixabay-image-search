@@ -2,10 +2,23 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import PixabayImage from '../image';
-import { FigureStyles } from './style';
+import {
+  FigureStyles,
+  ImageContainerStyles,
+  PaddingStyles,
+  StyledParagraph,
+} from './style';
 
 const StyledFigure = styled.figure`
   ${FigureStyles};
+`;
+
+const ImageContainer = styled.button`
+  ${ImageContainerStyles};
+`;
+
+const Padding = styled.i`
+  ${PaddingStyles};
 `;
 
 const ImageGallery = props => {
@@ -18,16 +31,35 @@ const ImageGallery = props => {
   return (
     <StyledFigure imagesAreLoading={imagesAreLoading}>
       {pixabayImages.map(imageData => {
-        const { id, tags, webformatURL } = imageData;
+        const {
+          id,
+          tags,
+          webformatURL,
+          webformatHeight,
+          webformatWidth,
+          imageWidth,
+          imageHeight,
+        } = imageData;
         return (
-          <PixabayImage
+          <ImageContainer
+            type="button"
             key={id}
             id={id}
-            webformatURL={webformatURL}
-            tags={tags}
-            handleImagesLoaded={handleImagesLoaded}
-            handleShowingModal={handleShowingModal}
-          />
+            width={webformatWidth}
+            height={webformatHeight}
+            onClick={() => handleShowingModal(id)}
+          >
+            <Padding width={webformatWidth} height={webformatHeight} />
+            <PixabayImage
+              id={id}
+              webformatURL={webformatURL}
+              tags={tags}
+              handleImagesLoaded={handleImagesLoaded}
+            />
+            <StyledParagraph aria-hidden="true">
+              {imageWidth} x {imageHeight}
+            </StyledParagraph>
+          </ImageContainer>
         );
       })}
     </StyledFigure>

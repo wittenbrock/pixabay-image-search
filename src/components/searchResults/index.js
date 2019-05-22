@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { FadeLoader } from 'react-spinners';
+import { Circle } from 'styled-spinkit';
 import queryPixabay from '../../utilities/pixabay-api';
 import ImageGallery from '../imageGallery';
 import Modal from '../modal/index';
 import SearchBar from '../searchBar/index';
 import Error from '../error/index';
 import { StyledAnchor, SearchResultsContainer, Centered } from './style';
-import './grid-styles.css';
 
 // Check if all the images have loaded to the DOM
 // input: HTML DOM node | output: true or false boolean
@@ -87,20 +86,14 @@ class SearchResults extends Component {
     }
   };
 
-  // loops through all the images in the gallery and add a css grid class
-  buildCssGrid = htmlImageGallery => {
-    const htmlImageElements = [...htmlImageGallery.querySelectorAll('img')];
-
-    htmlImageElements.forEach((image, number) =>
-      image.classList.add(`img${number}`)
-    );
+  setImageGalleryRef = htmlElement => {
+    this.imageGalleryRef = htmlElement;
   };
 
   // after all the images have loaded to the DOM, set imagesAreLoading to false
   handleImagesLoaded = () => {
     const { setImagesAreLoadingTo } = this.props;
     const result = areImagesStillLoading(this.imageGalleryRef);
-    this.buildCssGrid(this.imageGalleryRef);
     setImagesAreLoadingTo(result);
   };
 
@@ -109,7 +102,7 @@ class SearchResults extends Component {
     const { imagesAreLoading } = this.props;
     return imagesAreLoading ? (
       <Centered>
-        <FadeLoader />
+        <Circle color="hsl(0, 0%, 100%)" />
       </Centered>
     ) : null;
   };
@@ -144,10 +137,6 @@ class SearchResults extends Component {
         handleClosingModal={this.hideModal}
       />
     ) : null;
-  };
-
-  setImageGalleryRef = htmlElement => {
-    this.imageGalleryRef = htmlElement;
   };
 
   render() {
@@ -185,9 +174,9 @@ class SearchResults extends Component {
           handleSubmit={handleSubmit}
           setImagesAreLoadingTo={setImagesAreLoadingTo}
           errorMessage={[
-            `Your search `,
+            `Your search "`,
             <strong>{searchQuery}</strong>,
-            ` did not match any images.`,
+            `" did not match any images.`,
           ]}
         />
       );
@@ -201,9 +190,6 @@ class SearchResults extends Component {
             setImagesAreLoadingTo={setImagesAreLoadingTo}
             placeholderText="Search images"
           />
-          <p>
-            You searched for: <strong>{searchQuery}</strong>
-          </p>
         </header>
         {this.renderLoadingAnimation()}
         {this.renderModalImage()}
