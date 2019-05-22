@@ -10,11 +10,12 @@ const StyledButton = styled.button`
   background-position: left center;
   border-top-right-radius: 2.5rem;
   border-bottom-right-radius: 2.5rem;
-  border: 2px solid white;
+  border: 2px solid hsl(0, 0%, 100%);
   border-left: none;
   height: 4.4rem;
   width: 5rem;
-  background-color: ${p => (p.inputtedSearch !== '' ? 'white' : 'transparent')};
+  background-color: ${p =>
+    p.inputtedSearch !== '' ? 'hsl(0, 0%, 100%)' : 'transparent'};
 
   &:disabled {
     background-image: url('/assets/icon-search-disabled.svg');
@@ -32,20 +33,21 @@ const StyledButton = styled.button`
 const StyledInput = styled.input`
   border-top-left-radius: 2.5rem;
   border-bottom-left-radius: 2.5rem;
-  border: 2px solid white;
+  border: 2px solid hsl(0, 0%, 100%);
   border-right: none;
   width: 56rem;
   height: 4.4rem;
   padding-left: 1.8rem;
-  background-color: ${p => (p.inputtedSearch !== '' ? 'white' : 'transparent')};
+  background-color: ${p =>
+    p.inputtedSearch !== '' ? 'hsl(0, 0%, 100%)' : 'transparent'};
 
   &:focus {
-    background-color: white;
-    color: black;
+    background-color: hsl(0, 0%, 100%);
+    color: hsl(0, 0%, 0%);
   }
 
   &:focus ~ ${StyledButton} {
-    background-color: white;
+    background-color: hsl(0, 0%, 100%);
   }
 
   @media screen and (min-width: 600px) {
@@ -91,7 +93,7 @@ class SearchBar extends Component {
   };
 
   render() {
-    const { inputtedSearch, prevInputtedSearch } = this.state;
+    const { inputtedSearch } = this.state;
     const { placeholderText } = this.props;
     return (
       <StyledForm onSubmit={this.handleSubmit}>

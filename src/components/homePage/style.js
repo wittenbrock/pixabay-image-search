@@ -18,8 +18,14 @@ const MovingGradient = keyframes`
 export const HomeContainer = styled(CenteredColumn)`
   width: 100vw;
   height: 100vh;
-  color: black;
-  background-image: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  color: hsl(0, 0%, 0%);
+  background-image: linear-gradient(
+    -45deg,
+    hsl(14, 82%, 63%),
+    hsl(337, 78%, 57%),
+    hsl(196, 72%, 49%),
+    hsl(166, 72%, 49%)
+  );
   background-size: 400%;
   animation: ${MovingGradient} 15s ease infinite alternate;
 `;

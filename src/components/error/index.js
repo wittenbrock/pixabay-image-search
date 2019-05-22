@@ -1,7 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import { CenteredColumn } from '../helper-styles';
 import SearchBar from '../searchBar/index';
+
+const ErrorMessage = styled.p`
+  max-width: 50rem;
+`;
 
 const Error = props => {
   const { handleSubmit, setImagesAreLoadingTo, errorMessage } = props;
@@ -14,7 +19,7 @@ const Error = props => {
           placeholderText="Search images"
         />
       </header>
-      <p>{errorMessage}</p>
+      <ErrorMessage>{errorMessage}</ErrorMessage>
     </CenteredColumn>
   );
 };

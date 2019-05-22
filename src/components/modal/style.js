@@ -6,14 +6,20 @@ import '../../assets/icon-inbox-download-hover.svg';
 import { CenteredColumn } from '../helper-styles';
 
 export const StyledFigure = styled.figure`
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.6);
+  display: none;
+
+  @media screen and (hover) {
+    display: initial;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background: hsla(0, 0%, 0%, 0.6);
+  }
 `;
 
 export const StyledDiv = styled(CenteredColumn)`
@@ -29,8 +35,6 @@ export const CloseButton = styled.button`
   background-image: url('/assets/icon-close.svg');
   background-repeat: no-repeat;
   background-size: cover;
-  background-color: transparent;
-  padding: none;
   margin-bottom: 1rem;
   top: 0;
   height: 6rem;
@@ -52,12 +56,4 @@ export const DownloadLargeImage = styled(CenteredColumn)`
   &:hover {
     background-image: url('/assets/icon-inbox-download-hover.svg');
   }
-`;
-
-export const ButtonText = styled.span`
-  text-transform: uppercase;
-`;
-
-export const ImageSize = styled.span`
-  color: red;
 `;

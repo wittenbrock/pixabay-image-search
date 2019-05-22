@@ -13,8 +13,8 @@ const GlobalStyles = createGlobalStyle`
 html {
   box-sizing: border-box;
   font-size: 62.5%;
-  background: #f6f6f6;
-  color: black;
+  background: hsl(240, 2%, 20%);
+  color: hsl(0, 0%, 100%);
   font-family: 'Roboto', sans-serif;
 }
 
@@ -38,12 +38,17 @@ input {
 }
 
 ::placeholder {
-  color: white;
+  color: hsl(0, 0%, 100%);
   opacity: 1;
 }
 
 button {
-  border: 0px;
+  padding: 0;
+  border: none;
+  font: inherit;
+  color: inherit;
+  background-color: transparent;
+  cursor: pointer;
 }
 
 textarea, select, input, button { outline: none; }
