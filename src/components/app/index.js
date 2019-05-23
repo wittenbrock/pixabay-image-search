@@ -2,20 +2,6 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import HomePage from '../homePage/index';
 import SearchResults from '../searchResults/index';
-import Test from './test';
-// import SearchBar from '../searchBar';
-// import SearchResults from '../SearchResults';
-
-/*
-  Component Tree
-
-  app
-    -> search-bar 
-    -> display-image-results
-        -> loading-screen
-        -> image-grid
-            -> pixabay-image
-*/
 
 class App extends Component {
   state = {
@@ -37,21 +23,6 @@ class App extends Component {
 
   render() {
     const { searchQuery, imagesAreLoading } = this.state;
-    // return (
-    // <>
-    //   <SearchBar
-    // onSubmit={this.handleSubmit}
-    // setImagesAreLoadingTo={this.setImagesAreLoadingTo}
-    //   />
-    //   {searchQuery !== '' && (
-    //     <SearchResults
-    // searchQuery={searchQuery}
-    // imagesAreLoading={imagesAreLoading}
-    // setImagesAreLoadingTo={this.setImagesAreLoadingTo}
-    //     />
-    //   )}
-    // </>
-    // );
     return (
       <Router>
         <Switch>
@@ -63,7 +34,6 @@ class App extends Component {
                 {...props}
                 handleSubmit={this.handleSubmit}
                 setImagesAreLoadingTo={this.setImagesAreLoadingTo}
-                searchQuery={searchQuery}
               />
             )}
           />
@@ -73,14 +43,12 @@ class App extends Component {
               <SearchResults
                 {...props}
                 searchQuery={searchQuery}
-                imagesAreLoading={imagesAreLoading}
                 setImagesAreLoadingTo={this.setImagesAreLoadingTo}
+                imagesAreLoading={imagesAreLoading}
                 handleSubmit={this.handleSubmit}
-                setImageAreLoadingTo={this.setImagesAreLoadingTo}
               />
             )}
           />
-          <Route component={Test} />
         </Switch>
       </Router>
     );

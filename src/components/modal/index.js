@@ -12,8 +12,6 @@ class Modal extends Component {
     handleDeactivatingModal: PropTypes.func.isRequired,
   };
 
-  closeButtonRef = React.createRef();
-
   imageRef = React.createRef();
 
   getApplicationNode = () => document.getElementById('root');
@@ -55,7 +53,6 @@ class Modal extends Component {
             <CloseButton
               type="button"
               onClick={handleDeactivatingModal}
-              ref={this.CloseButtonRef}
               id="modal-close-button"
             >
               <ScreenReaderOnly>Close fullscreen image</ScreenReaderOnly>

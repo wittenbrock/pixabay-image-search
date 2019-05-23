@@ -28,7 +28,6 @@ const ImageGallery = props => {
     imagesAreLoading,
     handleActivatingModal,
     imageGalleryRef,
-    imageContainerRef,
   } = props;
   return (
     <StyledFigure imagesAreLoading={imagesAreLoading} ref={imageGalleryRef}>
@@ -50,7 +49,6 @@ const ImageGallery = props => {
             width={webformatWidth}
             height={webformatHeight}
             onClick={() => handleActivatingModal(id)}
-            ref={imageContainerRef}
           >
             <Padding width={webformatWidth} height={webformatHeight} />
             <PixabayImage
@@ -76,7 +74,6 @@ ImageGallery.propTypes = {
   imagesAreLoading: PropTypes.bool.isRequired,
   handleActivatingModal: PropTypes.func.isRequired,
   imageGalleryRef: PropTypes.object.isRequired,
-  imageContainerRef: PropTypes.object,
 };
 
 export default ImageGallery;
