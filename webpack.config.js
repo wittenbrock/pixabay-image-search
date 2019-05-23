@@ -3,10 +3,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CleanWebpackPlugin from 'clean-webpack-plugin';
 import TerserJSPlugin from 'terser-webpack-plugin';
 import Dotenv from 'dotenv-webpack';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
-
-const mode = process.env.NODE_ENV || 'production';
 
 module.exports = {
   // ------------------------------------
@@ -86,13 +83,6 @@ module.exports = {
           },
         ],
       },
-      {
-        test: /\.css$/,
-        use: [
-          mode === 'development' ? 'style-loader' : MiniCssExtractPlugin.loader,
-          'css-loader',
-        ],
-      },
     ], // rules array ends
   },
 
@@ -110,9 +100,6 @@ module.exports = {
         removeComments: true,
         collapseWhitespace: true,
       },
-    }),
-    new MiniCssExtractPlugin({
-      filename: 'style.[contenthash].css',
     }),
     new CopyWebpackPlugin([{ from: '_redirects' }]),
   ], // plugins array ends
