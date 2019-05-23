@@ -24,7 +24,7 @@ body {
 
 a {
   text-decoration: none;
-  color: inherit;
+  color: hsl(218, 81%, 61%);
 }
 
 img {
