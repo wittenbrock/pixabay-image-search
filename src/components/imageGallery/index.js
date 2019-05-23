@@ -27,9 +27,11 @@ const ImageGallery = props => {
     handleImagesLoaded,
     imagesAreLoading,
     handleShowingModal,
+    imageGalleryRef,
+    imageContainerRef,
   } = props;
   return (
-    <StyledFigure imagesAreLoading={imagesAreLoading}>
+    <StyledFigure imagesAreLoading={imagesAreLoading} ref={imageGalleryRef}>
       {pixabayImages.map(imageData => {
         const {
           id,
@@ -48,6 +50,7 @@ const ImageGallery = props => {
             width={webformatWidth}
             height={webformatHeight}
             onClick={() => handleShowingModal(id)}
+            ref={imageContainerRef}
           >
             <Padding width={webformatWidth} height={webformatHeight} />
             <PixabayImage
@@ -72,6 +75,8 @@ ImageGallery.propTypes = {
   handleImagesLoaded: PropTypes.func.isRequired,
   imagesAreLoading: PropTypes.bool.isRequired,
   handleShowingModal: PropTypes.func.isRequired,
+  imageGalleryRef: PropTypes.object.isRequired,
+  imageContainerRef: PropTypes.object,
 };
 
 export default ImageGallery;

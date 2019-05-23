@@ -1,32 +1,42 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
+import FocusTrap from 'focus-trap-react';
+// import styled from 'styled-components';
 import {
-  StyledFigure,
-  StyledDiv,
+  // DarkenedBackdrop,
+  ModalContainer,
   CloseButton,
-  DownloadLargeImage,
+  DownloadImageButton,
 } from './style';
 import { ScreenReaderOnly } from '../helper-styles';
+import './styles.css';
+
+// const Test = styled(FocusTrap)`
+//   ${DarkenedBackdrop}
+// `;
 
 class Modal extends Component {
-  componentDidMount = () => {
-    document.addEventListener('mousedown', this.handleClickOutsideModal);
+  static propTypes = {
+    tags: PropTypes.string.isRequired,
+    smallImageUrl: PropTypes.string.isRequired,
+    largeImageUrl: PropTypes.string.isRequired,
+    handleClosingModal: PropTypes.func.isRequired,
+    closeButtonRef: PropTypes.object.isRequired,
   };
 
-  componentWillUnmount = () => {
-    document.removeEventListener('mousedown', this.handleClickOutsideModal);
-  };
-
-  setModalRef = htmlNode => {
-    this.modalRef = htmlNode;
-  };
+  imageRef = React.createRef();
 
   handleClickOutsideModal = event => {
     const { handleClosingModal } = this.props;
-    if (!this.modalRef.contains(event.target)) {
-      handleClosingModal();
-    }
+    if (this.imageRef && this.imageRef.current.contains(event.target)) return;
+    handleClosingModal();
   };
+
+  // handleEscapeKey = event => {
+  //   const { handleClosingModal } = this.props;
+  //   return event.keyCode === 27 && handleClosingModal();
+  // };
 
   render() {
     const {
@@ -34,34 +44,41 @@ class Modal extends Component {
       smallImageUrl,
       largeImageUrl,
       handleClosingModal,
+      closeButtonRef,
     } = this.props;
-    return (
-      <StyledFigure>
-        <StyledDiv ref={this.setModalRef}>
-          <img src={smallImageUrl} alt={tags} />
-          <CloseButton type="button" onClick={handleClosingModal}>
+    return ReactDOM.createPortal(
+      <FocusTrap
+        className="darkened-backdrop"
+        aria-modal="true"
+        tabIndex="-1"
+        role="dialog"
+        aria-label="Fullscreen Image"
+        // onKeyDown={this.handleEscapeKey}
+        onClick={this.handleClickOutsideModal}
+      >
+        <ModalContainer>
+          <img src={smallImageUrl} alt={tags} ref={this.imageRef} />
+          <CloseButton
+            type="button"
+            onClick={handleClosingModal}
+            ref={closeButtonRef}
+          >
             <ScreenReaderOnly>Close Modal</ScreenReaderOnly>
           </CloseButton>
-          <DownloadLargeImage
+          <DownloadImageButton
             as="a"
             download
             href={largeImageUrl}
             target="_blank"
             rel="noopener noreferrer"
           >
-            <ScreenReaderOnly>Download</ScreenReaderOnly>
-          </DownloadLargeImage>
-        </StyledDiv>
-      </StyledFigure>
+            <ScreenReaderOnly>Download Image</ScreenReaderOnly>
+          </DownloadImageButton>
+        </ModalContainer>
+      </FocusTrap>,
+      document.body
     );
   }
 }
-
-Modal.propTypes = {
-  tags: PropTypes.string.isRequired,
-  smallImageUrl: PropTypes.string.isRequired,
-  largeImageUrl: PropTypes.string.isRequired,
-  handleClosingModal: PropTypes.func.isRequired,
-};
 
 export default Modal;
