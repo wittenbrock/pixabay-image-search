@@ -5,62 +5,43 @@ import '../../assets/icon-inbox-download.svg';
 import '../../assets/icon-inbox-download-hover.svg';
 import { CenteredColumn } from '../helper-styles';
 
-// Styled Components and Focus Trap do not play nice together
-// Used styled object with ClassName as an alternative solution
-// export const darkenedBackdrop = {
-//   position: 'fixed',
-//   top: '0',
-//   left: '0',
-//   width: '100%',
-//   height: '100%',
-//   zIndex: '1',
-//   transform: 'translateZ(0)',
-//   backgroundColor: 'hsla(0, 0%, 0%, 0.6)',
-// };
-
-export const DarkenedBackdrop = styled.aside`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  transform: translateZ(0);
-  background-color: hsla(0, 0%, 0%, 0.6);
-`;
-
 export const ModalContainer = styled(CenteredColumn)`
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  padding: 2.5em 1.5em 1.5em 1.5em;
+  padding: 2.5rem 1.5rem 1.5rem 1.5rem;
   overflow-y: auto;
-  background-color: hsla(0, 0%, 0%, 0.6);
+  ${'' /* background-color: hsla(0, 0%, 0%, 0.6); */}
   -webkit-overflow-scrolling: touch;
 
   @media screen and (min-width: 600px) {
-    left: 50%;
     top: 50%;
+    left: 50%;
+    width: auto;
     height: auto;
+    padding: 0;
+    padding-top: 5rem;
     transform: translate(-50%, -50%);
-    max-width: 30em;
+
     max-height: calc(100% - 1em);
     background-color: transparent;
   }
 `;
 
 export const CloseButton = styled.button`
-  position: absolute;
   background-image: url('/assets/icon-close.svg');
   background-repeat: no-repeat;
   background-size: cover;
-  margin-bottom: 1rem;
-  top: 0;
   height: 6rem;
   width: 6rem;
   transition: transform ease-in-out 0.2s;
+
+  @media screen and (min-width: 600px) {
+    position: absolute;
+    top: 0;
+  }
 
   @media screen and (hover) {
     &:focus,
@@ -69,7 +50,7 @@ export const CloseButton = styled.button`
     }
 
     &:focus {
-      transform: scale(1.05);
+      transform: scale(1.1);
     }
   }
 `;
@@ -78,9 +59,9 @@ export const DownloadImageButton = styled(CenteredColumn)`
   background-image: url('/assets/icon-inbox-download.svg');
   background-repeat: no-repeat;
   background-size: cover;
-  margin-top: 1rem;
-  height: 5rem;
-  width: 5rem;
+  ${'' /* margin-top: 1rem; */}
+  height: 4rem;
+  width: 4rem;
   transition: transform ease-in-out 0.2s;
 
   @media screen and (hover) {
@@ -90,7 +71,7 @@ export const DownloadImageButton = styled(CenteredColumn)`
     }
 
     &:focus {
-      transform: scale(1.05);
+      transform: scale(1.1);
       outline: none;
     }
   }

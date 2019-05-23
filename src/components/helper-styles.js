@@ -18,3 +18,11 @@ export const CenteredColumn = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
+export const CenteredRow = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 1rem;
+`;

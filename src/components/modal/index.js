@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-  DarkenedBackdrop,
-  ModalContainer,
-  CloseButton,
-  DownloadImageButton,
-} from './style';
-import { ScreenReaderOnly } from '../helper-styles';
+import AriaModal from 'react-aria-modal';
+import { ModalContainer, CloseButton, DownloadImageButton } from './style';
+import { ScreenReaderOnly, CenteredRow } from '../helper-styles';
 
 class Modal extends Component {
   static propTypes = {
@@ -14,6 +10,18 @@ class Modal extends Component {
     smallImageUrl: PropTypes.string.isRequired,
     largeImageUrl: PropTypes.string.isRequired,
     handleDeactivatingModal: PropTypes.func.isRequired,
+  };
+
+  closeButtonRef = React.createRef();
+
+  imageRef = React.createRef();
+
+  getApplicationNode = () => document.getElementById('root');
+
+  handleClickOutsideImage = event => {
+    const { handleDeactivatingModal } = this.props;
+    if (this.imageRef.current.contains(event.target)) return;
+    handleDeactivatingModal();
   };
 
   render() {
@@ -24,23 +32,37 @@ class Modal extends Component {
       handleDeactivatingModal,
     } = this.props;
     return (
-      <DarkenedBackdrop>
-        <ModalContainer>
-          <img src={smallImageUrl} alt={tags} />
-          <CloseButton type="button" onClick={handleDeactivatingModal}>
-            <ScreenReaderOnly>Close Modal</ScreenReaderOnly>
-          </CloseButton>
-          <DownloadImageButton
-            as="a"
-            download
-            href={largeImageUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <ScreenReaderOnly>Download Image</ScreenReaderOnly>
-          </DownloadImageButton>
+      <AriaModal
+        titleText="Fullscreen Image"
+        onExit={handleDeactivatingModal}
+        getApplicationNode={this.getApplicationNode}
+        initialFocus="#modal-close-button"
+        underlayColor="hsla(0, 0%, 0%, 0.7)"
+        verticallyCenter
+      >
+        <ModalContainer as="figure" onClick={this.handleClickOutsideImage}>
+          <img src={smallImageUrl} alt={tags} ref={this.imageRef} />
+          <CenteredRow>
+            <DownloadImageButton
+              as="a"
+              download
+              href={largeImageUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <ScreenReaderOnly>Download image</ScreenReaderOnly>
+            </DownloadImageButton>
+            <CloseButton
+              type="button"
+              onClick={handleDeactivatingModal}
+              ref={this.CloseButtonRef}
+              id="modal-close-button"
+            >
+              <ScreenReaderOnly>Close fullscreen image</ScreenReaderOnly>
+            </CloseButton>
+          </CenteredRow>
         </ModalContainer>
-      </DarkenedBackdrop>
+      </AriaModal>
     );
   }
 }

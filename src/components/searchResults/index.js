@@ -126,11 +126,7 @@ class SearchResults extends Component {
       <Modal
         tags={clickedImage.tags}
         smallImageUrl={clickedImage.webformatURL}
-        smallImageWidth={clickedImage.webformatWidth}
-        smallImageHeight={clickedImage.webformatHeight}
         largeImageUrl={clickedImage.largeImageURL}
-        largeImageWidth={clickedImage.imageWidth}
-        largeImageHeight={clickedImage.imageHeight}
         handleDeactivatingModal={this.deactivateModal}
       />
     ) : null;
