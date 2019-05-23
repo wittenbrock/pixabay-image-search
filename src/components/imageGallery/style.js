@@ -1,6 +1,6 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
-export const FigureStyles = css`
+export const StyledFigure = styled.figure`
   display: ${p => (p.imagesAreLoading ? 'none' : 'flex')};
   flex-wrap: wrap;
   max-width: 150rem;
@@ -34,7 +34,7 @@ export const StyledSpan = styled.span`
   margin: 0;
 `;
 
-export const ImageContainerStyles = css`
+export const ImageContainer = styled.button`
   position: relative;
   margin: 0.5rem;
   width: ${p => (p.width * 200) / p.height}px;
@@ -62,7 +62,7 @@ export const ImageContainerStyles = css`
   }
 `;
 
-export const PaddingStyles = css`
+export const Padding = styled.i`
   display: block;
   padding-bottom: ${p => (p.height / p.width) * 100}%;
 `;

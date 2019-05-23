@@ -1,25 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import PixabayImage from '../image';
-import {
-  FigureStyles,
-  ImageContainerStyles,
-  PaddingStyles,
-  StyledSpan,
-} from './style';
-
-const StyledFigure = styled.figure`
-  ${FigureStyles};
-`;
-
-const ImageContainer = styled.button`
-  ${ImageContainerStyles};
-`;
-
-const Padding = styled.i`
-  ${PaddingStyles};
-`;
+import { StyledFigure, ImageContainer, Padding, StyledSpan } from './style';
 
 const ImageGallery = props => {
   const {

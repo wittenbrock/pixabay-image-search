@@ -13,7 +13,6 @@ export const ModalContainer = styled(CenteredColumn)`
   height: 100%;
   padding: 2.5rem 1.5rem 1.5rem 1.5rem;
   overflow-y: auto;
-  ${'' /* background-color: hsla(0, 0%, 0%, 0.6); */}
   -webkit-overflow-scrolling: touch;
 
   @media screen and (min-width: 600px) {
@@ -59,7 +58,6 @@ export const DownloadImageButton = styled(CenteredColumn)`
   background-image: url('/assets/icon-inbox-download.svg');
   background-repeat: no-repeat;
   background-size: cover;
-  ${'' /* margin-top: 1rem; */}
   height: 4rem;
   width: 4rem;
   transition: transform ease-in-out 0.2s;
