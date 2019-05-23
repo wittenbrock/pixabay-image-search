@@ -6,21 +6,17 @@ import ImageGallery from '../imageGallery';
 import Modal from '../modal/index';
 import SearchBar from '../searchBar/index';
 import Error from '../error/index';
+import { ScreenReaderOnly } from '../helper-styles';
 import { StyledAnchor, SearchResultsContainer, Centered } from './style';
 
-// Check if all the images have loaded to the DOM
-// input: HTML DOM node | output: true or false boolean
-function areImagesStillLoading(htmlImageGallery) {
-  const htmlImageElements = [...htmlImageGallery.querySelectorAll('img')];
-  return !htmlImageElements.every(image => image.complete);
-}
-
+// A container component responsible for calling the pixabay API
+// then displaying error UI or the image gallery.
 class SearchResults extends Component {
   static propTypes = {
     searchQuery: PropTypes.string.isRequired,
     setImagesAreLoadingTo: PropTypes.func.isRequired,
     imagesAreLoading: PropTypes.bool.isRequired,
-    handleSubmit: PropTypes.func.isRequired,
+    handleSubmittedSearch: PropTypes.func.isRequired,
   };
 
   state = {
@@ -31,19 +27,23 @@ class SearchResults extends Component {
     idOfClickedImage: null,
   };
 
-  // Calls the Pixabay database API with the user's search
-  // then sets the state depending on what Pixabay returns
+  // Passed down through ImageGallery's props.
+  imageGalleryRef = React.createRef();
+
+  // Calls the Pixabay database API with the user's search,
+  // then sets the state depending on Pixabay's response.
+  // Used by componentDidMount and componentDidUpdate.
   performPixabaySearch = userSearch => {
     const { setImagesAreLoadingTo } = this.props;
     queryPixabay(userSearch)
-      // if a connection error occurred
+      // If a connection error occurred.
       .catch(() => {
         setImagesAreLoadingTo(false);
         this.setState(() => ({
           pixabayConnectionError: true,
         }));
       })
-      // if the search didn't match any images
+      // If the search didn't match any images.
       .then(pixabayImages => {
         if (pixabayImages.length === 0) {
           setImagesAreLoadingTo(false);
@@ -51,14 +51,14 @@ class SearchResults extends Component {
             noImagesWereReturned: true,
           }));
         }
-        // if the search was successful
+        // If the search was successful.
         return this.setState(() => ({
           pixabayImages,
         }));
       });
   };
 
-  // after the component mounts query Pixabay
+  // Query Pixabay if the search is defined.
   componentDidMount = () => {
     const { searchQuery } = this.props;
 
@@ -67,13 +67,13 @@ class SearchResults extends Component {
     }
   };
 
-  // after a new search is inputted, reset the state, then query Pixabay
+  // After a new search is inputted, reset the state, then query Pixabay.
   componentDidUpdate = prevProps => {
     const { searchQuery } = this.props;
     const { searchQuery: prevSearchQuery } = prevProps;
 
     if (searchQuery !== prevSearchQuery) {
-      // reset the state before starting a new search
+      // Reset the state.
       this.setState(() => ({
         pixabayImages: [],
         pixabayConnectionError: null,
@@ -81,69 +81,71 @@ class SearchResults extends Component {
         isModalVisible: null,
         idOfClickedImage: null,
       }));
-      // start a new search
+      // Start a new search.
       this.performPixabaySearch(searchQuery);
     }
   };
 
-  setImageGalleryRef = htmlElement => {
-    this.imageGalleryRef = htmlElement;
+  // Check if all the images in ImageGallery have finished loading to the DOM.
+  checkIfImagesAreLoading = imageGalleryNode => {
+    const htmlImageElements = [...imageGalleryNode.querySelectorAll('img')];
+    return !htmlImageElements.every(image => image.complete);
   };
 
-  // after all the images have loaded to the DOM, set imagesAreLoading to false
+  // When all the images have loaded to the DOM, set imagesAreLoading to false.
   handleImagesLoaded = () => {
     const { setImagesAreLoadingTo } = this.props;
-    const result = areImagesStillLoading(this.imageGalleryRef);
+    const result = this.checkIfImagesAreLoading(this.imageGalleryRef.current);
     setImagesAreLoadingTo(result);
   };
 
-  // display the loading animation as the images are loading to the DOM
+  // Display the loading animation as the images are loading to the DOM.
   renderLoadingAnimation = () => {
     const { imagesAreLoading } = this.props;
     return imagesAreLoading ? (
       <Centered>
         <Circle color="hsl(0, 0%, 100%)" />
+        <ScreenReaderOnly as="p">Loading Images</ScreenReaderOnly>
       </Centered>
     ) : null;
   };
 
-  showModal = id => {
+  activateModal = id => {
     this.setState(() => ({
       idOfClickedImage: id,
       isModalVisible: true,
     }));
   };
 
-  hideModal = () => {
+  deactivateModal = () => {
     this.setState(() => ({
       isModalVisible: false,
     }));
   };
 
-  renderModalImage = () => {
+  // Find the id of the clicked image, then show that image in the modal.
+  renderModal = () => {
     const { pixabayImages, isModalVisible, idOfClickedImage } = this.state;
+    // Find the clicked image.
     const clickedImage = pixabayImages.find(
       imgData => imgData.id === idOfClickedImage
     );
+    // Display the modal.
     return isModalVisible ? (
       <Modal
         tags={clickedImage.tags}
         smallImageUrl={clickedImage.webformatURL}
-        smallImageWidth={clickedImage.webformatWidth}
-        smallImageHeight={clickedImage.webformatHeight}
         largeImageUrl={clickedImage.largeImageURL}
-        largeImageWidth={clickedImage.imageWidth}
-        largeImageHeight={clickedImage.imageHeight}
-        handleClosingModal={this.hideModal}
+        handleDeactivatingModal={this.deactivateModal}
       />
     ) : null;
   };
 
   render() {
-    const { searchQuery } = this.props;
     const {
+      searchQuery,
       imagesAreLoading,
-      handleSubmit,
+      handleSubmittedSearch,
       setImagesAreLoadingTo,
     } = this.props;
     const {
@@ -155,7 +157,7 @@ class SearchResults extends Component {
     if (pixabayConnectionError) {
       return (
         <Error
-          handleSubmit={handleSubmit}
+          handleSubmittedSearch={handleSubmittedSearch}
           setImagesAreLoadingTo={setImagesAreLoadingTo}
           errorMessage={[
             `There was an error connecting to Pixabay's database. If this error persists, please check if `,
@@ -171,7 +173,7 @@ class SearchResults extends Component {
     if (noImagesWereReturned) {
       return (
         <Error
-          handleSubmit={handleSubmit}
+          handleSubmittedSearch={handleSubmittedSearch}
           setImagesAreLoadingTo={setImagesAreLoadingTo}
           errorMessage={[
             `Your search "`,
@@ -186,21 +188,20 @@ class SearchResults extends Component {
       <SearchResultsContainer>
         <header>
           <SearchBar
-            onSubmit={handleSubmit}
+            onSubmit={handleSubmittedSearch}
             setImagesAreLoadingTo={setImagesAreLoadingTo}
             placeholderText="Search images"
           />
         </header>
         {this.renderLoadingAnimation()}
-        {this.renderModalImage()}
-        <div ref={this.setImageGalleryRef}>
-          <ImageGallery
-            pixabayImages={pixabayImages}
-            handleImagesLoaded={this.handleImagesLoaded}
-            imagesAreLoading={imagesAreLoading}
-            handleShowingModal={this.showModal}
-          />
-        </div>
+        {this.renderModal()}
+        <ImageGallery
+          pixabayImages={pixabayImages}
+          handleImagesLoaded={this.handleImagesLoaded}
+          imagesAreLoading={imagesAreLoading}
+          handleActivatingModal={this.activateModal}
+          imageGalleryRef={this.imageGalleryRef}
+        />
       </SearchResultsContainer>
     );
   }

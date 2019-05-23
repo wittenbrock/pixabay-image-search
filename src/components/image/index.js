@@ -1,6 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyledImage } from './style';
+import styled from 'styled-components';
+
+export const StyledImage = styled.img`
+  position: absolute;
+  top: 0;
+  width: 100%;
+  vertical-align: bottom;
+`;
 
 const PixabayImage = props => {
   const { id, tags, webformatURL, handleImagesLoaded } = props;

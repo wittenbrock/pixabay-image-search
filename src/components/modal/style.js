@@ -5,55 +5,72 @@ import '../../assets/icon-inbox-download.svg';
 import '../../assets/icon-inbox-download-hover.svg';
 import { CenteredColumn } from '../helper-styles';
 
-export const StyledFigure = styled.figure`
-  display: none;
-
-  @media screen and (hover) {
-    display: initial;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
-    background: hsla(0, 0%, 0%, 0.6);
-  }
-`;
-
-export const StyledDiv = styled(CenteredColumn)`
+export const ModalContainer = styled(CenteredColumn)`
   position: fixed;
-  padding-top: 6rem;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 2.5rem 1.5rem 1.5rem 1.5rem;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+
+  @media screen and (min-width: 700px) {
+    top: 50%;
+    left: 50%;
+    width: auto;
+    height: auto;
+    padding: 0;
+    padding-top: 5rem;
+    transform: translate(-50%, -50%);
+
+    max-height: calc(100% - 1em);
+    background-color: transparent;
+  }
 `;
 
 export const CloseButton = styled.button`
-  position: absolute;
   background-image: url('/assets/icon-close.svg');
   background-repeat: no-repeat;
   background-size: cover;
-  margin-bottom: 1rem;
-  top: 0;
   height: 6rem;
   width: 6rem;
+  transition: transform ease-in-out 0.2s;
 
-  &:hover {
-    background-image: url('/assets/icon-close-hover.svg');
+  @media screen and (min-width: 600px) {
+    position: absolute;
+    top: 0;
+  }
+
+  @media screen and (hover) {
+    &:focus,
+    &:hover {
+      background-image: url('/assets/icon-close-hover.svg');
+    }
+
+    &:focus {
+      transform: scale(1.1);
+    }
   }
 `;
 
-export const DownloadLargeImage = styled(CenteredColumn)`
+export const DownloadImageButton = styled(CenteredColumn)`
   background-image: url('/assets/icon-inbox-download.svg');
   background-repeat: no-repeat;
   background-size: cover;
-  margin-top: 1rem;
-  height: 5rem;
-  width: 5rem;
+  height: 4rem;
+  width: 4rem;
+  transition: transform ease-in-out 0.2s;
 
-  &:hover {
-    background-image: url('/assets/icon-inbox-download-hover.svg');
+  @media screen and (hover) {
+    &:focus,
+    &:hover {
+      background-image: url('/assets/icon-inbox-download-hover.svg');
+    }
+
+    &:focus {
+      transform: scale(1.1);
+      outline: none;
+    }
   }
 `;

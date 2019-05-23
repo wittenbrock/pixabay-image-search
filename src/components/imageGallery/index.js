@@ -1,35 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import PixabayImage from '../image';
-import {
-  FigureStyles,
-  ImageContainerStyles,
-  PaddingStyles,
-  StyledSpan,
-} from './style';
+import { ScreenReaderOnly } from '../helper-styles';
+import { StyledFigure, ImageContainer, Padding, StyledSpan } from './style';
 
-const StyledFigure = styled.figure`
-  ${FigureStyles};
-`;
-
-const ImageContainer = styled.button`
-  ${ImageContainerStyles};
-`;
-
-const Padding = styled.i`
-  ${PaddingStyles};
-`;
-
+// Map through the pixabayImages array and create the image gallery
+// when the images have finished loading, the gallery becomes visible.
 const ImageGallery = props => {
   const {
     pixabayImages,
     handleImagesLoaded,
     imagesAreLoading,
-    handleShowingModal,
+    handleActivatingModal,
+    imageGalleryRef,
   } = props;
   return (
-    <StyledFigure imagesAreLoading={imagesAreLoading}>
+    <StyledFigure imagesAreLoading={imagesAreLoading} ref={imageGalleryRef}>
+      <ScreenReaderOnly as="h1">Search Results</ScreenReaderOnly>
       {pixabayImages.map(imageData => {
         const {
           id,
@@ -47,8 +34,9 @@ const ImageGallery = props => {
             id={id}
             width={webformatWidth}
             height={webformatHeight}
-            onClick={() => handleShowingModal(id)}
+            onClick={() => handleActivatingModal(id)}
           >
+            <ScreenReaderOnly>View fullscreen image</ScreenReaderOnly>
             <Padding width={webformatWidth} height={webformatHeight} />
             <PixabayImage
               id={id}
@@ -71,7 +59,8 @@ ImageGallery.propTypes = {
   pixabayImages: PropTypes.arrayOf(PropTypes.object).isRequired,
   handleImagesLoaded: PropTypes.func.isRequired,
   imagesAreLoading: PropTypes.bool.isRequired,
-  handleShowingModal: PropTypes.func.isRequired,
+  handleActivatingModal: PropTypes.func.isRequired,
+  imageGalleryRef: PropTypes.object.isRequired,
 };
 
 export default ImageGallery;

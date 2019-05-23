@@ -8,13 +8,15 @@ const ErrorMessage = styled.p`
   max-width: 50rem;
 `;
 
+// Displays when there is a pixabay connection error or
+// when the search query doesn't match any images.
 const Error = props => {
-  const { handleSubmit, setImagesAreLoadingTo, errorMessage } = props;
+  const { handleSubmittedSearch, setImagesAreLoadingTo, errorMessage } = props;
   return (
     <CenteredColumn>
       <header>
         <SearchBar
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmittedSearch}
           setImagesAreLoadingTo={setImagesAreLoadingTo}
           placeholderText="Search images"
         />
@@ -25,7 +27,7 @@ const Error = props => {
 };
 
 Error.propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
+  handleSubmittedSearch: PropTypes.func.isRequired,
   setImagesAreLoadingTo: PropTypes.func.isRequired,
   errorMessage: PropTypes.string.isRequired,
 };

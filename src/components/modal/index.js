@@ -1,31 +1,29 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-  StyledFigure,
-  StyledDiv,
-  CloseButton,
-  DownloadLargeImage,
-} from './style';
-import { ScreenReaderOnly } from '../helper-styles';
+import AriaModal from 'react-aria-modal';
+import { ModalContainer, CloseButton, DownloadImageButton } from './style';
+import { ScreenReaderOnly, CenteredRow } from '../helper-styles';
 
+// When ImageContainer is clicked in ImageGallery, display the modal.
 class Modal extends Component {
-  componentDidMount = () => {
-    document.addEventListener('mousedown', this.handleClickOutsideModal);
+  static propTypes = {
+    tags: PropTypes.string.isRequired,
+    smallImageUrl: PropTypes.string.isRequired,
+    largeImageUrl: PropTypes.string.isRequired,
+    handleDeactivatingModal: PropTypes.func.isRequired,
   };
 
-  componentWillUnmount = () => {
-    document.removeEventListener('mousedown', this.handleClickOutsideModal);
-  };
+  imageRef = React.createRef();
 
-  setModalRef = htmlNode => {
-    this.modalRef = htmlNode;
-  };
+  // Required by the AriaModal package to put the modal's html outside of the React App,
+  // instead of inside the ImageContainer.
+  getApplicationNode = () => document.getElementById('root');
 
-  handleClickOutsideModal = event => {
-    const { handleClosingModal } = this.props;
-    if (!this.modalRef.contains(event.target)) {
-      handleClosingModal();
-    }
+  // If the user clicks outside the image, the modal will close.
+  handleClickOutsideImage = event => {
+    const { handleDeactivatingModal } = this.props;
+    if (this.imageRef.current.contains(event.target)) return;
+    handleDeactivatingModal();
   };
 
   render() {
@@ -33,35 +31,41 @@ class Modal extends Component {
       tags,
       smallImageUrl,
       largeImageUrl,
-      handleClosingModal,
+      handleDeactivatingModal,
     } = this.props;
     return (
-      <StyledFigure>
-        <StyledDiv ref={this.setModalRef}>
-          <img src={smallImageUrl} alt={tags} />
-          <CloseButton type="button" onClick={handleClosingModal}>
-            <ScreenReaderOnly>Close Modal</ScreenReaderOnly>
-          </CloseButton>
-          <DownloadLargeImage
-            as="a"
-            download
-            href={largeImageUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <ScreenReaderOnly>Download</ScreenReaderOnly>
-          </DownloadLargeImage>
-        </StyledDiv>
-      </StyledFigure>
+      <AriaModal
+        titleText="Fullscreen image"
+        onExit={handleDeactivatingModal}
+        getApplicationNode={this.getApplicationNode}
+        initialFocus="#modal-close-button"
+        underlayColor="hsla(0, 0%, 0%, 0.7)"
+        verticallyCenter
+      >
+        <ModalContainer as="figure" onClick={this.handleClickOutsideImage}>
+          <img src={smallImageUrl} alt={tags} ref={this.imageRef} />
+          <CenteredRow>
+            <DownloadImageButton
+              as="a"
+              download
+              href={largeImageUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <ScreenReaderOnly>Download image</ScreenReaderOnly>
+            </DownloadImageButton>
+            <CloseButton
+              type="button"
+              onClick={handleDeactivatingModal}
+              id="modal-close-button"
+            >
+              <ScreenReaderOnly>Close fullscreen image</ScreenReaderOnly>
+            </CloseButton>
+          </CenteredRow>
+        </ModalContainer>
+      </AriaModal>
     );
   }
 }
-
-Modal.propTypes = {
-  tags: PropTypes.string.isRequired,
-  smallImageUrl: PropTypes.string.isRequired,
-  largeImageUrl: PropTypes.string.isRequired,
-  handleClosingModal: PropTypes.func.isRequired,
-};
 
 export default Modal;
