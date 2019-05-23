@@ -4,6 +4,8 @@ import PixabayImage from '../image';
 import { ScreenReaderOnly } from '../helper-styles';
 import { StyledFigure, ImageContainer, Padding, StyledSpan } from './style';
 
+// Map through the pixabayImages array and create the image gallery
+// when the images have finished loading, the gallery becomes visible.
 const ImageGallery = props => {
   const {
     pixabayImages,

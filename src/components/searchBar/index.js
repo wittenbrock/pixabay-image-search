@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { StyledForm, StyledButton, StyledInput } from './style';
 import { ScreenReaderOnly } from '../helper-styles';
 
-// Stores user's input as inputtedSearch,
-// then sends it to App, its parent component, where it's stored as searchQuery
+// Stores user's search as inputtedSearch,
+// then sends it to up to App where it's stored as searchQuery.
 class SearchBar extends Component {
   static propTypes = {
     onSubmit: PropTypes.func.isRequired,
@@ -30,8 +30,11 @@ class SearchBar extends Component {
     const { inputtedSearch, prevInputtedSearch } = this.state;
 
     if (inputtedSearch !== prevInputtedSearch) {
+      // Send the search up to the App component.
       onSubmit(inputtedSearch);
+      // Start the loading animation.
       setImagesAreLoadingTo(true);
+      // Call handleRedirect if it is passed through props.
       if (handleRedirect) {
         handleRedirect();
       }

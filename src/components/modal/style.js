@@ -15,7 +15,7 @@ export const ModalContainer = styled(CenteredColumn)`
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 
-  @media screen and (min-width: 600px) {
+  @media screen and (min-width: 700px) {
     top: 50%;
     left: 50%;
     width: auto;

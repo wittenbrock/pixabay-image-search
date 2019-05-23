@@ -6,9 +6,10 @@ import '../../assets/icon-pixabay.svg';
 
 import SearchBar from '../searchBar/index';
 
+// Redirects to "/search-results" when the user submits their search.
 class HomePage extends Component {
   static propTypes = {
-    handleSubmit: PropTypes.func.isRequired,
+    handleSubmittedSearch: PropTypes.func.isRequired,
     setImagesAreLoadingTo: PropTypes.func.isRequired,
   };
 
@@ -23,8 +24,9 @@ class HomePage extends Component {
   };
 
   render() {
-    const { handleSubmit, setImagesAreLoadingTo } = this.props;
+    const { handleSubmittedSearch, setImagesAreLoadingTo } = this.props;
     const { toSearchResults } = this.state;
+
     if (toSearchResults === true) {
       return <Redirect to="/search-results" />;
     }
@@ -41,7 +43,7 @@ class HomePage extends Component {
           </h1>
         </a>
         <SearchBar
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmittedSearch}
           setImagesAreLoadingTo={setImagesAreLoadingTo}
           handleRedirect={this.handleRedirect}
           placeholderText="Search over 1 million images"

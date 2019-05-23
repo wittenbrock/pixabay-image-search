@@ -34,6 +34,8 @@ export const StyledSpan = styled.span`
   margin: 0;
 `;
 
+// This creative solution to create a Google Images like photo gallery
+// came from: https://github.com/xieranmaya/blog/issues/6
 export const ImageContainer = styled.button`
   position: relative;
   margin: 0.5rem;

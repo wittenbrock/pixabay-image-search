@@ -4,6 +4,7 @@ import AriaModal from 'react-aria-modal';
 import { ModalContainer, CloseButton, DownloadImageButton } from './style';
 import { ScreenReaderOnly, CenteredRow } from '../helper-styles';
 
+// When ImageContainer is clicked in ImageGallery, display the modal.
 class Modal extends Component {
   static propTypes = {
     tags: PropTypes.string.isRequired,
@@ -14,8 +15,11 @@ class Modal extends Component {
 
   imageRef = React.createRef();
 
+  // Required by the AriaModal package to put the modal's html outside of the React App,
+  // instead of inside the ImageContainer.
   getApplicationNode = () => document.getElementById('root');
 
+  // If the user clicks outside the image, the modal will close.
   handleClickOutsideImage = event => {
     const { handleDeactivatingModal } = this.props;
     if (this.imageRef.current.contains(event.target)) return;

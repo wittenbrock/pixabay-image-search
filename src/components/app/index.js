@@ -4,13 +4,14 @@ import NoMatch from '../noMatch/index';
 import HomePage from '../homePage/index';
 import SearchResults from '../searchResults/index';
 
+// Creates two routes: "/" and "/search-results".
 class App extends Component {
   state = {
     searchQuery: '',
     imagesAreLoading: false,
   };
 
-  handleSubmit = inputtedSearch => {
+  handleSubmittedSearch = inputtedSearch => {
     this.setState(() => ({
       searchQuery: inputtedSearch,
     }));
@@ -33,7 +34,7 @@ class App extends Component {
             render={props => (
               <HomePage
                 {...props}
-                handleSubmit={this.handleSubmit}
+                handleSubmittedSearch={this.handleSubmittedSearch}
                 setImagesAreLoadingTo={this.setImagesAreLoadingTo}
               />
             )}
@@ -46,7 +47,7 @@ class App extends Component {
                 searchQuery={searchQuery}
                 setImagesAreLoadingTo={this.setImagesAreLoadingTo}
                 imagesAreLoading={imagesAreLoading}
-                handleSubmit={this.handleSubmit}
+                handleSubmittedSearch={this.handleSubmittedSearch}
               />
             )}
           />
