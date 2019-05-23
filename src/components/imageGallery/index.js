@@ -26,7 +26,7 @@ const ImageGallery = props => {
     pixabayImages,
     handleImagesLoaded,
     imagesAreLoading,
-    handleShowingModal,
+    handleActivatingModal,
     imageGalleryRef,
     imageContainerRef,
   } = props;
@@ -49,7 +49,7 @@ const ImageGallery = props => {
             id={id}
             width={webformatWidth}
             height={webformatHeight}
-            onClick={() => handleShowingModal(id)}
+            onClick={() => handleActivatingModal(id)}
             ref={imageContainerRef}
           >
             <Padding width={webformatWidth} height={webformatHeight} />
@@ -74,7 +74,7 @@ ImageGallery.propTypes = {
   pixabayImages: PropTypes.arrayOf(PropTypes.object).isRequired,
   handleImagesLoaded: PropTypes.func.isRequired,
   imagesAreLoading: PropTypes.bool.isRequired,
-  handleShowingModal: PropTypes.func.isRequired,
+  handleActivatingModal: PropTypes.func.isRequired,
   imageGalleryRef: PropTypes.object.isRequired,
   imageContainerRef: PropTypes.object,
 };

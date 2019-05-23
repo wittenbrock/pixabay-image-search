@@ -57,10 +57,6 @@ figure {
   margin: 0;
 }
 
-.lock-scroll {
-  overflow: hidden !important;
-}
-
 `;
 
 export default GlobalStyles;

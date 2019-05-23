@@ -26,14 +26,6 @@ class SearchResults extends Component {
 
   imageGalleryRef = React.createRef();
 
-  closeButtonRef = React.createRef();
-
-  // imageContainerRefs = [];
-
-  // setRef = ref => {
-  //   this.imageContainerRefs.push(ref);
-  // };
-
   // Calls the Pixabay database API with the user's search
   // then sets the state depending on what Pixabay returns
   performPixabaySearch = userSearch => {
@@ -90,15 +82,15 @@ class SearchResults extends Component {
   };
 
   // check if all the images in ImageGallery have loaded to the DOM
-  areImagesStillLoading = htmlImageGallery => {
-    const htmlImageElements = [...htmlImageGallery.querySelectorAll('img')];
+  checkIfImagesAreLoading = imageGalleryNode => {
+    const htmlImageElements = [...imageGalleryNode.querySelectorAll('img')];
     return !htmlImageElements.every(image => image.complete);
   };
 
   // after all the images have loaded to the DOM, set imagesAreLoading to false
   handleImagesLoaded = () => {
     const { setImagesAreLoadingTo } = this.props;
-    const result = this.areImagesStillLoading(this.imageGalleryRef.current);
+    const result = this.checkIfImagesAreLoading(this.imageGalleryRef.current);
     setImagesAreLoadingTo(result);
   };
 
@@ -112,31 +104,20 @@ class SearchResults extends Component {
     ) : null;
   };
 
-  toggleScrollLock = () =>
-    document.querySelector('html').classList.toggle('lock-scroll');
-
-  showModal = id => {
-    this.setState(
-      () => ({
-        idOfClickedImage: id,
-        isModalVisible: true,
-      }),
-      () => {
-        this.closeButtonRef.current.focus();
-      }
-    );
-    this.toggleScrollLock();
+  activateModal = id => {
+    this.setState(() => ({
+      idOfClickedImage: id,
+      isModalVisible: true,
+    }));
   };
 
-  hideModal = () => {
+  deactivateModal = () => {
     this.setState(() => ({
       isModalVisible: false,
     }));
-    // this.imageContainerRef.current.focus();
-    this.toggleScrollLock();
   };
 
-  renderModalImage = () => {
+  renderModal = () => {
     const { pixabayImages, isModalVisible, idOfClickedImage } = this.state;
     const clickedImage = pixabayImages.find(
       imgData => imgData.id === idOfClickedImage
@@ -150,15 +131,14 @@ class SearchResults extends Component {
         largeImageUrl={clickedImage.largeImageURL}
         largeImageWidth={clickedImage.imageWidth}
         largeImageHeight={clickedImage.imageHeight}
-        handleClosingModal={this.hideModal}
-        closeButtonRef={this.closeButtonRef}
+        handleDeactivatingModal={this.deactivateModal}
       />
     ) : null;
   };
 
   render() {
-    const { searchQuery } = this.props;
     const {
+      searchQuery,
       imagesAreLoading,
       handleSubmit,
       setImagesAreLoadingTo,
@@ -209,14 +189,13 @@ class SearchResults extends Component {
           />
         </header>
         {this.renderLoadingAnimation()}
-        {this.renderModalImage()}
+        {this.renderModal()}
         <ImageGallery
-          imageGalleryRef={this.imageGalleryRef}
           pixabayImages={pixabayImages}
           handleImagesLoaded={this.handleImagesLoaded}
           imagesAreLoading={imagesAreLoading}
-          handleShowingModal={this.showModal}
-          imageContainerRef={this.imageContainerRef}
+          handleActivatingModal={this.activateModal}
+          imageGalleryRef={this.imageGalleryRef}
         />
       </SearchResultsContainer>
     );
