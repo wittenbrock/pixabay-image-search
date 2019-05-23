@@ -31,7 +31,7 @@ class Modal extends Component {
     } = this.props;
     return (
       <AriaModal
-        titleText="Fullscreen Image"
+        titleText="Fullscreen image"
         onExit={handleDeactivatingModal}
         getApplicationNode={this.getApplicationNode}
         initialFocus="#modal-close-button"

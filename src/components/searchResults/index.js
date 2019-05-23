@@ -6,6 +6,7 @@ import ImageGallery from '../imageGallery';
 import Modal from '../modal/index';
 import SearchBar from '../searchBar/index';
 import Error from '../error/index';
+import { ScreenReaderOnly } from '../helper-styles';
 import { StyledAnchor, SearchResultsContainer, Centered } from './style';
 
 class SearchResults extends Component {
@@ -100,6 +101,7 @@ class SearchResults extends Component {
     return imagesAreLoading ? (
       <Centered>
         <Circle color="hsl(0, 0%, 100%)" />
+        <ScreenReaderOnly as="p">Loading Images</ScreenReaderOnly>
       </Centered>
     ) : null;
   };

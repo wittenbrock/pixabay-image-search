@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import PixabayImage from '../image';
+import { ScreenReaderOnly } from '../helper-styles';
 import { StyledFigure, ImageContainer, Padding, StyledSpan } from './style';
 
 const ImageGallery = props => {
@@ -13,6 +14,7 @@ const ImageGallery = props => {
   } = props;
   return (
     <StyledFigure imagesAreLoading={imagesAreLoading} ref={imageGalleryRef}>
+      <ScreenReaderOnly as="h1">Search Results</ScreenReaderOnly>
       {pixabayImages.map(imageData => {
         const {
           id,
@@ -32,6 +34,7 @@ const ImageGallery = props => {
             height={webformatHeight}
             onClick={() => handleActivatingModal(id)}
           >
+            <ScreenReaderOnly>View fullscreen image</ScreenReaderOnly>
             <Padding width={webformatWidth} height={webformatHeight} />
             <PixabayImage
               id={id}
