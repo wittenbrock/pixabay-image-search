@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const StyledAnchor = styled.a`
-  color: blue;
+  color: hsl(218, 81%, 61%);
   text-decoration: underline;
 `;
 
