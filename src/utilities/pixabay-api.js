@@ -1,11 +1,11 @@
 // Fetches image data from Pixabay database
 // input: string | output: array of objects
 async function getPictures(searchQuery) {
+  // PIXABAY_API_KEY is stored as an environmental variable on Netlify
+  const PIXABAY_API_KEY = undefined;
   const urlString = searchQuery.replace(' ', '+');
   const fetchResponse = await fetch(
-    `https://pixabay.com/api/?key=${
-      process.env.PIXABAY_API_KEY
-    }&q=${urlString}&image_type=photo`
+    `https://pixabay.com/api/?key=${PIXABAY_API_KEY}&q=${urlString}&image_type=photo`
   );
   const searchResultObj = await fetchResponse.json();
   const { hits: searchResultArray } = searchResultObj;
