@@ -36,3 +36,7 @@ yarn-error.log*
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Netlify
+functions/
+netlify.toml
