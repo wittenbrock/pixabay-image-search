@@ -17,10 +17,13 @@
     "prettier:format": "prettier --write src",
     "lint": "eslint src/**/*.js",
     "lint:fix": "eslint src/**/*.js --fix",
-    "lint:css": "stylelint ./src/**/*.js"
+    "lint:css": "stylelint ./src/**/*.js",
+    "start:lambda": "netlify-lambda serve functions",
+    "build:lambda": "netlify-lambda build functions"
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
+    "netlify-lambda": "^1.4.13",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-aria-modal": "^4.0.0",
@@ -47,7 +50,7 @@
     "eslint-config-prettier": "^4.3.0",
     "eslint-config-wesbos": "0.0.19",
     "eslint-plugin-html": "^5.0.5",
-    "eslint-plugin-import": "^2.17.2",
+    "eslint-plugin-import": "^2.17.3",
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-react": "^7.13.0",
@@ -61,8 +64,8 @@
     "stylelint": "^10.0.1",
     "stylelint-config-recommended": "^2.2.0",
     "stylelint-config-styled-components": "^0.1.1",
-    "stylelint-processor-styled-components": "^1.7.0",
-    "terser-webpack-plugin": "^1.2.4",
+    "stylelint-processor-styled-components": "^1.8.0",
+    "terser-webpack-plugin": "^1.3.0",
     "webpack": "^4.32.2",
     "webpack-cli": "^3.3.2",
     "webpack-dev-server": "^3.4.1"
