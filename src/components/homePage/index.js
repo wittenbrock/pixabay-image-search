@@ -28,7 +28,7 @@ class HomePage extends Component {
     const { toSearchResults } = this.state;
 
     if (toSearchResults === true) {
-      return <Redirect to="/search-results" />;
+      return <Redirect push to="/search-results" />;
     }
 
     return (
