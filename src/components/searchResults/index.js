@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Circle } from 'styled-spinkit';
-import queryPixabay from '../../utilities/pixabay-api';
 import ImageGallery from '../imageGallery';
 import Modal from '../modal/index';
 import SearchBar from '../searchBar/index';
@@ -9,7 +8,7 @@ import Error from '../error/index';
 import { ScreenReaderOnly } from '../helper-styles';
 import { StyledAnchor, SearchResultsContainer, Centered } from './style';
 
-// A container component responsible for calling the pixabay API
+// A container component responsible for calling the Pixabay API
 // then displaying error UI or the image gallery.
 class SearchResults extends Component {
   static propTypes = {
@@ -30,12 +29,13 @@ class SearchResults extends Component {
   // Passed down through ImageGallery's props.
   imageGalleryRef = React.createRef();
 
-  // Calls the Pixabay database API with the user's search,
+  // Calls the Pixabay database API via the Netlify getPixabayImages lambda function,
   // then sets the state depending on Pixabay's response.
   // Used by componentDidMount and componentDidUpdate.
   performPixabaySearch = userSearch => {
     const { setImagesAreLoadingTo } = this.props;
-    queryPixabay(userSearch)
+    fetch(`/.netlify/functions/getPixabayImages?search=${userSearch}`)
+      .then(data => data.json())
       // If a connection error occurred.
       .catch(() => {
         setImagesAreLoadingTo(false);

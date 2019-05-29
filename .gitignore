@@ -38,6 +38,5 @@ ehthumbs.db
 Thumbs.db
 
 # Netlify
-functions/
-netlify.toml
 .netlify
+/functions/getPixaBayImages/node_modules

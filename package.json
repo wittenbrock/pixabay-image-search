@@ -17,9 +17,7 @@
     "prettier:format": "prettier --write src",
     "lint": "eslint src/**/*.js",
     "lint:fix": "eslint src/**/*.js --fix",
-    "lint:css": "stylelint ./src/**/*.js",
-    "start:lambda": "netlify-lambda serve functions",
-    "build:lambda": "netlify-lambda build functions"
+    "lint:css": "stylelint ./src/**/*.js"
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.4",

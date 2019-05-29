@@ -9,8 +9,8 @@ class SearchBar extends Component {
   static propTypes = {
     onSubmit: PropTypes.func.isRequired,
     setImagesAreLoadingTo: PropTypes.func.isRequired,
-    handleRedirect: PropTypes.func,
     placeholderText: PropTypes.string.isRequired,
+    handleHomePageRedirect: PropTypes.func,
   };
 
   state = {
@@ -26,17 +26,21 @@ class SearchBar extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    const { onSubmit, setImagesAreLoadingTo, handleRedirect } = this.props;
+    const {
+      onSubmit,
+      setImagesAreLoadingTo,
+      handleHomePageRedirect,
+    } = this.props;
     const { inputtedSearch, prevInputtedSearch } = this.state;
 
     if (inputtedSearch !== prevInputtedSearch) {
-      // Send the search up to the App component.
-      onSubmit(inputtedSearch);
       // Start the loading animation.
       setImagesAreLoadingTo(true);
-      // Call handleRedirect if it is passed through props.
-      if (handleRedirect) {
-        handleRedirect();
+      // Send the search up to the App component.
+      onSubmit(inputtedSearch);
+      // Call handleHomePageRedirect if it is passed through props.
+      if (handleHomePageRedirect) {
+        handleHomePageRedirect();
       }
     }
 

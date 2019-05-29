@@ -17,7 +17,7 @@ class HomePage extends Component {
     toSearchResults: false,
   };
 
-  handleRedirect = () => {
+  handleHomePageRedirect = () => {
     this.setState(() => ({
       toSearchResults: true,
     }));
@@ -28,7 +28,7 @@ class HomePage extends Component {
     const { toSearchResults } = this.state;
 
     if (toSearchResults === true) {
-      return <Redirect to="/search-results" />;
+      return <Redirect push to="/search-results/" />;
     }
 
     return (
@@ -45,7 +45,7 @@ class HomePage extends Component {
         <SearchBar
           onSubmit={handleSubmittedSearch}
           setImagesAreLoadingTo={setImagesAreLoadingTo}
-          handleRedirect={this.handleRedirect}
+          handleHomePageRedirect={this.handleHomePageRedirect}
           placeholderText="Search over 1 million images"
         />
       </HomeContainer>

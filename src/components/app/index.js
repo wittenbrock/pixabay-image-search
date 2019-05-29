@@ -4,7 +4,7 @@ import NoMatch from '../noMatch/index';
 import HomePage from '../homePage/index';
 import SearchResults from '../searchResults/index';
 
-// Creates two routes: "/" and "/search-results".
+// React Router creates two routes: "/" and "/search-results".
 class App extends Component {
   state = {
     searchQuery: '',
@@ -12,8 +12,9 @@ class App extends Component {
   };
 
   handleSubmittedSearch = inputtedSearch => {
+    const searchQuery = inputtedSearch.replace(' ', '+');
     this.setState(() => ({
-      searchQuery: inputtedSearch,
+      searchQuery,
     }));
   };
 
