@@ -6,10 +6,13 @@ Pixabay Image Search is a React application that allows users to search the [Pix
 
 ## Features
 * Displays up to 20 images with each search query
-* Generates a responsive image gallery
-* Allows users to download low and high resolution versions of each image 
-* Is keyboard accessible on Chrome and Firebox
-* Is mobile and desktop friendly
+* Allows users to download low and high resolution versions of each image
+* Retrieves data from the Pixabay API via an AWS lambda function
+* Enhances navigation through complete keyboard accessibility  on Chrome and Firebox
+* Uses client-side routing via React-Router
+* Includes a development environment with Babel transpiling, Webpack module bundling, a development server, and JS/CSS linting
+* Quickly adapts to mobile, tablet, and desktop viewports
+
 
 ## Installation
 
