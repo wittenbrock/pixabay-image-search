@@ -33,10 +33,6 @@ img {
   height: auto;
 }
 
-input {
-  border: 0px;
-}
-
 ::placeholder {
   color: hsl(0, 0%, 100%);
   opacity: 1;

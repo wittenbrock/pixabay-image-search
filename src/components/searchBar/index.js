@@ -57,7 +57,7 @@ class SearchBar extends Component {
         </ScreenReaderOnly>
         <StyledInput
           id="search-query"
-          type="text"
+          type="search"
           onChange={this.handleChange}
           placeholder={placeholderText}
           inputtedSearch={inputtedSearch}

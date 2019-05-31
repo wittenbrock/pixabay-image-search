@@ -41,6 +41,10 @@ export const StyledButton = styled.button`
 `;
 
 export const StyledInput = styled.input`
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: 0;
   border-top-left-radius: 2.5rem;
   border-bottom-left-radius: 2.5rem;
   border: 2px solid hsl(0, 0%, 100%);
