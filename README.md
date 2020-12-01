@@ -1,8 +1,8 @@
 ![pixabay-image-search](https://user-images.githubusercontent.com/41911653/58650130-6a1af880-82fd-11e9-9b58-b547b19b6605.png)
 
-# [Pixabay Image Search](https://dazzling-montalcini-88ef0f.netlify.com)
+# [Pixabay Image Search](https://pixabay-image-app.netlify.app)
 
-Pixabay Image Search is a React application that allows users to search the [Pixabay database](https://pixabay.com/) for images. This project is currently being on hosted on [Netlify](https://dazzling-montalcini-88ef0f.netlify.com).
+Pixabay Image Search is a React application that allows users to search the [Pixabay database](https://pixabay.com/) for images. This project is currently hosted on [Netlify](https://pixabay-image-app.netlify.app).
 
 ## Features
 * Displays up to 20 images with each search query
@@ -56,4 +56,4 @@ This project:
 * uses **React Router** for client side routing.
 * uses **AWS Lambda Functions** and the **Fetch API** for database queries
 * is styled with **Styled Components**.
-* [is hosted here on **Netlify**](https://dazzling-montalcini-88ef0f.netlify.com).
+* [is hosted here on **Netlify**](https://pixabay-image-app.netlify.app).
